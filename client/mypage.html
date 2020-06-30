@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Shop Homepage - Start Bootstrap Template</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/shop-homepage.css" rel="stylesheet">
+
+
+  <!-- Bootstrap -->
+ 
+  <style>
+    #container {
+      width: 70%;
+      margin: 0 auto;
+      /* 가로로 중앙에 배치 */
+      padding-top: 10%;
+      /* 테두리와 내용 사이의 패딩 여백 */
+    }
+
+    #list {
+      text-align: center;
+    }
+
+    #write {
+      text-align: right;
+    }
+
+
+
+    /* Bootstrap 수정 */
+    .table>thead {
+      background-color: #b3c6ff;
+    }
+
+    .table>thead>tr>th {
+      text-align: center;
+    }
+
+    .table-hover>tbody>tr:hover {
+      background-color: #e6ecff;
+    }
+
+    .table>tbody>tr>td {
+      text-align: center;
+    }
+
+    .table>tbody>tr>#title {
+      text-align: left;
+    }
+
+    div>#paging {
+      text-align: center;
+    }
+
+    .hit {
+      animation-name: blink;
+      animation-duration: 1.5s;
+      animation-timing-function: ease;
+      animation-iteration-count: infinite;
+      /* 위 속성들을 한 줄로 표기하기 */
+      /* -webkit-animation: blink 1.5s ease infinite; */
+    }
+
+    /* 애니메이션 지점 설정하기 */
+    /* 익스플로러 10 이상, 최신 모던 브라우저에서 지원 */
+    @keyframes blink {
+      from {
+        color: white;
+      }
+
+      30% {
+        color: yellow;
+      }
+
+      to {
+        color: red;
+        font-weight: bold;
+      }
+
+      /* 0% {color:white;}
+    30% {color: yellow;}
+    100% {color:red; font-weight: bold;} */
+    }
+
+    .board-title {
+      color: red;
+      margin-top: 90px;
+      font-size: 20px;
+    }
+
+    .write-button-div {
+      padding-bottom: 10px;
+      float: right;
+    }
+
+    #star_grade a {
+      text-decoration: none;
+      color: gray;
+    }
+
+    #star_grade a.on {
+      color: red;
+    }
+  </style>
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+    $('#star_grade a').click(function () {
+      $(this).parent().children("a").removeClass("on");  /* 별점의 on 클래스 전부 제거 */
+      $(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
+      return false;
+    });
+  </script>
+</head>
+
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <img src="./images/LOGO.png" style="width: 40px; height: 40px;">
+      <a class="navbar-brand" href="#">&nbsp다 ~ 주라</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">My Page</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Chatting</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-3">
+
+        <h1 class="my-4">Menu</h1>
+        <div class="list-group">
+          <a href="#" class="list-group-item">나눔 해요</a>
+          <a href="#" class="list-group-item">나눔 받아요</a>
+          <a href="#" class="list-group-item">우리 동네 검색</a>
+        </div>
+
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+
+        <div style="display:flex; flex-direction: column;">
+          <!-- User info -->
+          <div style="display: flex; flex-direction: row;">
+            <div>사용자 이름</div>
+            <div>사용자 이름</div>
+          </div>
+          <div>사용자 이메일</div>
+        </div>
+        <div>
+          <!-- Score -->
+          <p id="star_grade">
+            <a href="#">★</a>
+            <a href="#">★</a>
+            <a href="#">★</a>
+            <a href="#">★</a>
+            <a href="#">★</a>
+          </p>
+
+        </div>
+        <div>
+          <!-- Posts -->
+        </div>
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+
+
+</body>
+
+</html>
