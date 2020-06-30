@@ -36,28 +36,32 @@
                <span class="login100-form-title p-b-43">
                   <img src="./images/LOGO.png" style="width: 450px; height: 450px;">
                </span>
-               
-               <div class="wrap-input100 rs1 validate-input" data-validate = "Email is required">
+                    
+                    <div class="wrap-input100 rs1 validate-input" data-validate = "Username is required">
+                  <input class="input100" type="text" name="Email" id="name">
+                  <span class="label-input100">Name</span>
+                    </div>
+
+                    <div class="wrap-input100 rs2 validate-input" data-validate="Email is required">
                   <input class="input100" type="text" name="email" id="email">
                   <span class="label-input100">Email</span>
                </div>
+                    
+                    <div class="wrap-input100 rs3 validate-input" data-validate = "Password is required">
+                  <input class="input100" type="password" name="password" id="pwd">
+                  <span class="label-input100">password</span>
+                    </div>
                
                
-               <div class="wrap-input100 rs2 validate-input" data-validate="Password is required">
-                  <input class="input100" type="password" name="pass" id="pwd">
-                  <span class="label-input100">Password</span>
+               <div class="wrap-input100 rs4 validate-input" data-validate="Password is required">
+                  <input class="input100" type="password" name="pass" id="pwd2">
+                  <span class="label-input100">Password Check</span>
                </div>
 
                <div class="container-login100-form-btn">
                   <button type="button" class="login100-form-btn">
-                        Sign In
+                        SignUp
                   </button>
-               </div>
-               
-               <div class="text-center w-full p-t-23">
-                  <a href="./signup.html" class="txt1">
-                     Sign Up
-                  </a>
                </div>
             </form>
          </div>
@@ -66,61 +70,85 @@
    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
      <!--스크립트 부분. 자신의 스크립트 코드로 변경하세요! -->
      <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
-     <script>
-      var firebaseEmailAuth; //파이어베이스 email 인증 모듈 전역변수
-      var firebaseDatabase; //파이어베이스 db 모듈 전역변수
-      var userInfo; //가입한 유저의 정보. object 타입
-      //파이어 베이스 초기화 코드
-      var config = {
-         apiKey: "AIzaSyCweXAFVhwjG8cglNBGgGkelKW4trxFUxM",
-         authDomain: "webproject-cc0c8.firebaseapp.com",
-         databaseURL: "https://webproject-cc0c8.firebaseio.com",
-         projectId: "webproject-cc0c8",
-         storageBucket: "webproject-cc0c8.appspot.com",
-         messagingSenderId: "1019716028105",
-         appId: "1:1019716028105:web:6cb6a7ee21811dc2f66f18",
-         measurementId: "G-RF6V6XKLVQ"
-      };
-      firebase.initializeApp(config);
-      
-      firebaseEmailAuth = firebase.auth();
-      firebaseDatabase = firebase.database();
-    
-    
-      //제이쿼리 
-      $(document).ready(function(){
+      <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+      <script>
+        var firebaseEmailAuth; //파이어베이스 email 인증 모듈 전역변수
+        var firebaseDatabase; //파이어베이스 db 모듈 전역변수
+        var userInfo; //가입한 유저의 정보. object 타입
+        //파이어 베이스 초기화 코드
+        var config = {
+            apiKey: "AIzaSyCweXAFVhwjG8cglNBGgGkelKW4trxFUxM",
+            authDomain: "webproject-cc0c8.firebaseapp.com",
+            databaseURL: "https://webproject-cc0c8.firebaseio.com",
+            projectId: "webproject-cc0c8",
+            storageBucket: "webproject-cc0c8.appspot.com",
+            messagingSenderId: "1019716028105",
+            appId: "1:1019716028105:web:6cb6a7ee21811dc2f66f18",
+            measurementId: "G-RF6V6XKLVQ"
+        };
+        firebase.initializeApp(config);
+        
+        firebaseEmailAuth = firebase.auth();
+        firebaseDatabase = firebase.database();
      
-      //가입버튼 눌렀을 때 작동하는 함수
-      $(document).on('click','.login100-form-btn',function(){
-    
-         //jquery를 이용해서 입력된 값을 가져온다.  
-         var email = $('#email').val();
-         var password = $('#pwd').val();
-    
-         //이메일로 가입 버튼 눌렀을 때 작동되는 함수 - firebase 인증 모듈
-         firebaseEmailAuth.signInWithEmailAndPassword(email, password).then(function() {
-               //성공했을 때 작동되는 함수
-               logUser(); 
-         }, function(error) {
-               //에러가 발생했을 때 
-               var errorCode = error.code;
-			   var errorMessage = error.message;
-			   if(errorCode=='auth/invalid-email'){
-				alert('존재하지 않는 아이디입니다.');
-			   }
-               
-         });
-    
-         //가입 성공했을 때 호출 되는 함수 - 위의 firebase의 인증 모듈과 다른 database 모듈임을 확인하자.
-         function logUser(){
-            alert("로그인성공");
-            //메인 페이지로 이동시키고 세션 저장시키기
-            window.location.href = "./home.html"
-         }
-      });
-      });
-     </script>
+     
+        //제이쿼리 
+        $(document).ready(function(){
+      
+        //가입버튼 눌렀을 때 작동하는 함수
+        $(document).on('click','.login100-form-btn',function(){
+     
+            //jquery를 이용해서 입력된 값을 가져온다.  
+            var email = $('#email').val();
+            var password = $('#pwd').val();
+            var password2 = $('#pwd2').val();
+            name = $('#name').val();
 
+            if(password != password2)
+            {
+                alert('비밀번호가 동일하지 않습니다');
+            }
+            else{
+            //이메일로 가입 버튼 눌렀을 때 작동되는 함수 - firebase 인증 모듈
+            firebaseEmailAuth.createUserWithEmailAndPassword(email, password).then(function(user) {
+                    userInfo = user; //가입 후 callBack 함수로 생성된 유저의 정보가 user에 담겨서 넘어온다. 전역변수에 할당.
+     
+                    //뭐가 찍히는지 직접 체크해보세요.
+                    console.log("userInfo/"+userInfo); //오브젝트 타입
+                    console.log("userInfo.currentUser/"+userInfo.currentUser); //안됨
+                    console.log("userInfo.uid/"+userInfo.uid); //vPArtCHqPpOeIOpidEfug0Kgq3v1
+        
+                    //성공했을 때 작동되는 함수
+                    logUser(); 
+            }, function(error) {
+                    //에러가 발생했을 때 
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    if(errorCode = 'auth/invalid-email'){
+                        alert('비밀번호는 7자리 이상이어야 합니다.');
+                    }
+                    
+            });
+     
+            //가입 성공했을 때 호출 되는 함수 - 위의 firebase의 인증 모듈과 다른 database 모듈임을 확인하자.
+            function logUser(){
+            var ref = firebaseDatabase.ref("users/"+userInfo.uid); //저장될 곳을 users라는 부모 키를 레퍼런스로 지정.
+        
+            //저장 형식
+            var obj = {
+                name: name,
+             };
+     
+            ref.set(obj); // 고유한 자식 키가 하나 생셩이 되면서 json 삽입
+            alert("가입성공");
+             
+            //메인 페이지로 이동시키고 세션 저장시키기
+            window.location.href = "./index.html"
+        }
+    }
+        });
+        });
+      </script>
 
 <!--===============================================================================================-->
    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>

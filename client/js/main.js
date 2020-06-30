@@ -66,6 +66,10 @@
 
         $(thisAlert).removeClass('alert-validate');
     }
-    
-
+	function login () {
+        this.href="./give.html"
+    } 
+    function signup () {
+        this.href="./signup.html"
+	} 
 })(jQuery);
