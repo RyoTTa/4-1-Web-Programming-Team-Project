@@ -106,6 +106,32 @@
     #star_grade a.on {
       color: red;
     }
+
+    #scoreboard {
+      margin: 0 auto;
+      margin-top: 100px;
+      width: 95%;
+      height: 150px;
+      border: 2px solid rgb(240, 240, 240);
+      border-radius: 5px;
+    }
+
+    #history{
+      margin-top: 100px;
+    }
+
+    #historyheader{
+      margin-left:30px;
+    }
+
+    #historyboard {
+      margin: 0 auto;
+      margin-top: 30px;
+      width: 95%;
+      height: 150px;
+      border: 2px solid rgb(240, 240, 240);
+      border-radius: 5px;
+    }
   </style>
 
 
@@ -183,196 +209,213 @@
   </script>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <img src="./images/LOGO.png" style="width: 40px; height: 40px;">
+        <a class="navbar-brand" href="#">&nbsp다 ~ 주라</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a id='home' class="nav-link">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">My Page</a>
+            </li>
+            <li class="nav-item">
+              <a id='chat' class="nav-link">Chatting</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./index.html">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  
+    <!-- Page Content -->
     <div class="container">
-      <img src="./images/LOGO.png" style="width: 40px; height: 40px;">
-      <a class="navbar-brand" href="#">&nbsp다 ~ 주라</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a id='home' class="nav-link">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">My Page</a>
-          </li>
-          <li class="nav-item">
-            <a id='chat' class="nav-link" >Chatting</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./index.html">Logout</a>
-          </li>
-        </ul>
+      <div class="row">
+        <div class="col-lg-3">
+          <h1 class="my-4">Menu</h1>
+          <div class="list-group">
+            <a href="#" class="list-group-item">나눔 해요</a>
+            <a href="#" class="list-group-item">나눔 받아요</a>
+          </div>
+        </div>
+        <!-- /.col-lg-3 -->
+  
+        <div class="col-lg-9">
+          <div class="container" role="main"
+            style="border:2px solid rgb(240, 240, 240); border-radius: 7px; padding:30px; margin-top:80px; margin-bottom:30px;">
+  
+            <h1>사용자 정보</h1>
+  
+            <!--사용자 프로필 정보 표시-->
+            <div id="profile_container" style="display: flex; flex-direction: row; margin-top:30px;">
+              <div id="name" style="font-size:25px;">
+                
+              </div>
+              <div id="email" style="margin-left:40%; font-size: 20px; padding-top:5px;">
+                사용자 이메일
+              </div>
+            </div>
+            <div style="float:right;">
+              <button type="button" class="btn btn-dark">비밀번호 변경</button>
+            </div>
+            <!--사용자 프로필 정보 표시 끝-->
+  
+            <!--사용자 평점 출력부-->
+            <div id="scoreboard">
+              <div style="font-size: 20px; margin-top:20px; margin-left: 20px;">
+                사용자 평점
+              </div>
+              <div id="score">
+                <p id="star_grade" style="font-size:30px; text-align: center;">
+                  <a style='color:red' id='star0' href="#">☆</a>
+                  <a style='color:red' id='star1' href="#">☆</a>
+                  <a style='color:red' id='star2' href="#">☆</a>
+                  <a style='color:red' id='star3' href="#">☆</a>
+                  <a style='color:red' id='star4' href="#">☆</a>
+                </p>
+                <p style="font-size:20px; text-align: center;">
+                  3.7/5 점입니다.
+                </p>
+              </div>
+            </div>
+            <!--사용자 평점 출력부 끝-->
+  
+            <!--게시글 작성 이력 확인부-->
+            <div id="history">
+              <div id="historyheader">
+                <p style="font-size: 25px; margin-bottom: 10px;">게시글 작성 이력</p>
+                <div style="display: flex; flex-direction: row;">
+                  <button type="button" class="btn btn-dark" id="give-button" style="margin-right:10px;">해요</button>
+                  <button type="button" class="btn btn-dark" id="take-button">받아요</button>
+                </div>
+              </div>
+              <div id="historyboard">
+                <div class="give-table" >
+                  <table class="table table-striped table-bordered table-hover" style="table-layout: fixed; width: 100%;">
+                    <thead>
+                      <tr>
+                        <th width="10%">번호</th>
+                        <th width="40%">제목</th>
+                        <th width="10%">작성자</th>
+                        <th width="10%">평점</th>
+                        <th width="20%">작성일</th>
+                        <th width="10%">조회</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <c:forEach var="article" items="${articles}" varStatus="status">
+                        <tr>
+                          <td>${article.articleNumber}</td>
+                          <td id="title">
+                            <c:if test="${article.depth > 0}">
+                              &nbsp;&nbsp;
+                            </c:if>
+                            <a
+                              href="/bbs/content.bbs?articleNumber=${article.articleNumber}&pageNum=${pageNum}">${article.title}</a>
+                            <c:if test="${article.hit >= 20}">
+                              <span class="hit">hit!</span>
+                            </c:if>
+                          </td>
+                          <td>${article.id}</td>
+                          <td>${article.writeDate}</td>
+                          <td>${article.hit}</td>
+                          <td>${article.hit}</td>
+                        <tr>
+                      </c:forEach>
+                    </tbody>
+                  </table>
+                </div>
+  
+                <div class="take-table">
+                  <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th width="10%">번호</th>
+                        <th width="40%">제목</th>
+                        <th width="10%">작성자</th>
+                        <th width="10%">평점</th>
+                        <th width="20%">작성일</th>
+                        <th width="10%">조회</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <c:forEach var="article" items="${articles}" varStatus="status">
+                        <tr>
+                          <td>${article.articleNumber}</td>
+                          <td id="title">
+                            <c:if test="${article.depth > 0}">
+                              &nbsp;&nbsp;
+                            </c:if>
+                            <a
+                              href="/bbs/content.bbs?articleNumber=${article.articleNumber}&pageNum=${pageNum}">${article.title}</a>
+                            <c:if test="${article.hit >= 20}">
+                              <span class="hit">hit!</span>
+                            </c:if>
+                          </td>
+                          <td>${article.id}</td>
+                          <td>${article.writeDate}</td>
+                          <td>${article.hit}</td>
+                          <td>${article.hit}</td>
+                        <tr>
+                      </c:forEach>
+                    </tbody>
+                  </table>
+                </div>
+  
+              </div>
+            </div>
+  
+          </div>
+        </div>
+        <!--게시글 작성 이력 확인부 끝-->
+  
       </div>
     </div>
-  </nav>
-
-  <!-- Page Content -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-3">
-        <h1 class="my-4">Menu</h1>
-        <div class="list-group">
-          <a href="#" class="list-group-item">나눔 해요</a>
-          <a href="#" class="list-group-item">나눔 받아요</a>
-        </div>
-      </div>
-      <!-- /.col-lg-3 -->
-
-      <div class="col-lg-9">
-
-        <div style="display:flex; flex-direction: column; margin-top:100px;">
-          <!-- User info -->
-          <div style="display: flex; flex-direction: row;">
-            <div>사용자 이름 : </div>
-            <div id='name'>사용자 이름</div>
-          </div>
-
-          <div style="display: flex; flex-direction: row;">
-            <div>사용자 이메일 : </div>
-            <div id='email'>사용자 이메일</div>
-          </div>
-
-          <div>
-            <button type="button" class="btn btn-dark">비밀번호 변경</button>
-          </div>
-
-          <div style="display: flex; flex-direction: row;">
-            <div>사용자 평점 : </div>
-            <div>
-              <p id="star_grade">
-                <a style='color:red' id='star0' href="#">☆</a>
-                <a style='color:red' id='star1' href="#">☆</a>
-                <a style='color:red' id='star2' href="#">☆</a>
-                <a style='color:red' id='star3' href="#">☆</a>
-                <a style='color:red' id='star4' href="#">☆</a>
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <p>자기가 현재 쓴 게시글 목록</p>
-
-            <div style="display: flex; flex-direction: row;">
-              <button type="button" class="btn btn-dark" id="give-button" style="margin-right:10px;">해요</button>
-              <button type="button" class="btn btn-dark" id="take-button">받아요</button>
-            </div>
-            <br />
-            <div class="give-table">
-              <table class="table table-striped table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th width="10%">번호</th>
-                    <th width="40%">제목</th>
-                    <th width="10%">작성자</th>
-                    <th width="10%">평점</th>
-                    <th width="20%">작성일</th>
-                    <th width="10%">조회</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <c:forEach var="article" items="${articles}" varStatus="status">
-                    <tr>
-                      <td>${article.articleNumber}</td>
-                      <td id="title">
-                        <c:if test="${article.depth > 0}">
-                          &nbsp;&nbsp;
-                        </c:if>
-                        <a
-                          href="/bbs/content.bbs?articleNumber=${article.articleNumber}&pageNum=${pageNum}">${article.title}</a>
-                        <c:if test="${article.hit >= 20}">
-                          <span class="hit">hit!</span>
-                        </c:if>
-                      </td>
-                      <td>${article.id}</td>
-                      <td>${article.writeDate}</td>
-                      <td>${article.hit}</td>
-                      <td>${article.hit}</td>
-                    <tr>
-                  </c:forEach>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="take-table">
-              <table class="table table-striped table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th width="10%">번호</th>
-                    <th width="40%">제목</th>
-                    <th width="10%">작성자</th>
-                    <th width="10%">평점</th>
-                    <th width="20%">작성일</th>
-                    <th width="10%">조회</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <c:forEach var="article" items="${articles}" varStatus="status">
-                    <tr>
-                      <td>${article.articleNumber}</td>
-                      <td id="title">
-                        <c:if test="${article.depth > 0}">
-                          &nbsp;&nbsp;
-                        </c:if>
-                        <a
-                          href="/bbs/content.bbs?articleNumber=${article.articleNumber}&pageNum=${pageNum}">${article.title}</a>
-                        <c:if test="${article.hit >= 20}">
-                          <span class="hit">hit!</span>
-                        </c:if>
-                      </td>
-                      <td>${article.id}</td>
-                      <td>${article.writeDate}</td>
-                      <td>${article.hit}</td>
-                      <td>${article.hit}</td>
-                    <tr>
-                  </c:forEach>
-                </tbody>
-              </table>
-            </div>
-
-          </div>
-        </div>
-
-        <div>
-          <!-- Posts -->
-        </div>
-      </div>
-      <!-- /.col-lg-9 -->
-
+  
+    <!-- /.col-lg-9 -->
+  
     </div>
     <!-- /.row -->
-
-  </div>
-  <!-- /.container -->
-
-  <script>
-    $('.give-table').css("display", "none");
-    $('.take-table').css("display", "none");
-
-    $('#give-button').click(function () {
-      $('.give-table').css("display", "block");
-      $('.take-table').css("display", "none");
-    });
-
-    $('#take-button').click(function () {
-      $('.take-table').css("display", "block");
-      $('.give-table').css("display", "none");
-    });
-
-  </script>
-
-  <!-- Footer -->
-  <footer class="py-5 bg-dark">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+  
     </div>
     <!-- /.container -->
-  </footer>
-</body>
+  
+    <script>
+      $('.give-table').css("display", "none");
+      $('.take-table').css("display", "none");
+  
+      $('#give-button').click(function () {
+        $('.give-table').css("display", "block");
+        $('.take-table').css("display", "none");
+      });
+  
+      $('#take-button').click(function () {
+        $('.take-table').css("display", "block");
+        $('.give-table').css("display", "none");
+      });
+  
+    </script>
+  
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+  </body>
 
 </html>

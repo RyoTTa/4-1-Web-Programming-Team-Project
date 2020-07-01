@@ -4,51 +4,10 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
+
     <link href='css/Chat.css' rel='stylesheet' type='text/css'>
-    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
-    <!--스크립트 부분. 자신의 스크립트 코드로 변경하세요! -->
-    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
-    <script>
-        var firebaseEmailAuth; //파이어베이스 email 인증 모듈 전역변수
-        var firebaseDatabase; //파이어베이스 db 모듈 전역변수
-        var userInfo; //가입한 유저의 정보. object 타입
-        //파이어 베이스 초기화 코드
-        var config = {
-            apiKey: "AIzaSyCweXAFVhwjG8cglNBGgGkelKW4trxFUxM",
-            authDomain: "webproject-cc0c8.firebaseapp.com",
-            databaseURL: "https://webproject-cc0c8.firebaseio.com",
-            projectId: "webproject-cc0c8",
-            storageBucket: "webproject-cc0c8.appspot.com",
-            messagingSenderId: "1019716028105",
-            appId: "1:1019716028105:web:6cb6a7ee21811dc2f66f18",
-            measurementId: "G-RF6V6XKLVQ"
-        };
-        firebase.initializeApp(config);
 
-        firebaseEmailAuth = firebase.auth();
-        firebaseDatabase = firebase.database();
-        function getUrlParams() {
-            var params = {};
-            window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (str, key, value) { params[key] = value; });
-            return params;
-        }
-        var oParams = getUrlParams();
-        var uName = decodeURI(oParams.myName, "UTF-8");
-
-        var msgsref = firebase.database().ref("msgs/");
-        msgsref.on('child_added',function(snapshot){
-            var len = uName.length;
-            var owner = snapshot.key.substring(0,len);
-            var roomName = snapshot.key.substring(len);
-            //console.log('방주인은:'+owner);
-            //console.log('채팅하고있는사람:'+roomName);
-            if(owner == uName){
-                console.log(roomName); // 여기 roomName을 방 이름으로 하면 될듯.
-            }
-        });
-
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -80,61 +39,68 @@
             });
 
 
-            $(".friend").each(function () {
-                $(this).click(function () {
-                    var childOffset = $(this).offset();
-                    var parentOffset = $(this).parent().parent().offset();
-                    var childTop = childOffset.top - parentOffset.top;
-                    var clone = $(this).find('img').eq(0).clone();
-                    var top = childTop + 12 + "px";
+            $(document).on("click", ".friend", function () {
+                var childOffset = $(this).offset();
+                var parentOffset = $(this).parent().parent().offset();
+                //console.log('childoffset is : ' + childOffset.toString());
+                //console.log('parent is : ' + parentOffset.toString());
+                var childTop = childOffset.top - parentOffset.top;
+                var clone = $(this).find('img').eq(0).clone();
+                var top = childTop + 12 + "px";
 
-                    $(clone).css({ 'top': top }).addClass("floatingImg").appendTo("#chatbox");
+                $(clone).css({ 'top': top }).addClass("floatingImg").appendTo("#chatbox");
 
-                    setTimeout(function () { $("#profile p").addClass("animate"); $("#profile").addClass("animate"); }, 100);
-                    setTimeout(function () {
-                        $("#chat-messages").addClass("animate");
-                        $('.cx, .cy').addClass('s1');
-                        setTimeout(function () { $('.cx, .cy').addClass('s2'); }, 100);
-                        setTimeout(function () { $('.cx, .cy').addClass('s3'); }, 200);
-                    }, 150);
+                setTimeout(function () { $("#profile p").addClass("animate"); $("#profile").addClass("animate"); }, 100);
+                setTimeout(function () {
+                    $("#chat-messages").addClass("animate");
+                    $('.cx, .cy').addClass('s1');
+                    setTimeout(function () { $('.cx, .cy').addClass('s2'); }, 100);
+                    setTimeout(function () { $('.cx, .cy').addClass('s3'); }, 200);
+                }, 150);
 
+                var name = $(this).find("p strong").html();
+                var email = $(this).find("p span").html();
+                $("#profile p").html(name);
+                $("#profile span").html(email);
+
+                setOthername(name);
+                readmsg(name);
+
+                $(".message").not(".right").find("img").attr("src", $(clone).attr("src"));
+                $('#friendslist').fadeOut();
+                $('#chatview').fadeIn();
+
+                $('.floatingImg').animate({
+                    'width': "68px",
+                    'left': '265px',
+                    'top': '20px',
+                }, 300);
+
+                $(clone).css({ 'opacity': '99' });
+
+
+                $('#close').unbind("click").click(function () {
+                    $("#chat-messages, #profile, #profile p").removeClass("animate");
+                    $('.cx, .cy').removeClass("s1 s2 s3");
                     $('.floatingImg').animate({
-                        'width': "68px",
-                        'left': '265px',
-                        'top': '20px'
-                    }, 300);
+                        'width': "40px",
+                        'top': top,
+                        'left': '12px'
+                    }, 200, function () { $('.floatingImg').remove() });
 
-                    var name = $(this).find("p strong").html();
-                    var email = $(this).find("p span").html();
-                    $("#profile p").html(name);
-                    $("#profile span").html(email);
-
-                    $(".message").not(".right").find("img").attr("src", $(clone).attr("src"));
-                    $('#friendslist').fadeOut();
-                    $('#chatview').fadeIn();
-
-
-                    $('#close').unbind("click").click(function () {
-                        $("#chat-messages, #profile, #profile p").removeClass("animate");
-                        $('.cx, .cy').removeClass("s1 s2 s3");
-                        $('.floatingImg').animate({
-                            'width': "40px",
-                            'top': top,
-                            'left': '12px'
-                        }, 200, function () { $('.floatingImg').remove() });
-
-                        setTimeout(function () {
-                            $('#chatview').fadeOut();
-                            $('#friendslist').fadeIn();
-                        }, 50);
-                    });
-
+                    setTimeout(function () {
+                        $('#chatview').fadeOut();
+                        $('#friendslist').fadeIn();
+                    }, 50);
                 });
+
             });
         });</script>
+
 </head>
 
 <body style="background-color: rgb(200, 200, 200);">
+    <div id="Opponent"></div>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="background-color: rgba(0, 0, 0, 98);">
@@ -168,100 +134,256 @@
     <div id="chatbox" style="margin-top:100px;">
         <div id="friendslist">
             <div id="topmenu">
-                <span class="friends"></span>
                 <span class="chats"></span>
-                <span class="history"></span>
             </div>
 
-            <div id="friends">
-                <div class="friend">
-                    <img src="images/user.png" />
-                    <p>
-                        <strong>대화상대 이름1</strong>
-                        <span>대화상대 이메일</span>
-                    </p>
-                </div>
+            <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+            <!--스크립트 부분. 자신의 스크립트 코드로 변경하세요! -->
+            <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
 
-                <div class="friend">
-                    <img src="images/user.png" />
-                    <p>
-                        <strong>대화상대 이름2</strong>
-                        <span>대화상대 이메일2</span>
-                    </p>
-                </div>
+            <script type="text/javascript">
+                var count = 6;
+                //------------------------DB Reference Part START-----------------------------
+                var firebaseEmailAuth; //파이어베이스 email 인증 모듈 전역변수
+                var firebaseDatabase; //파이어베이스 db 모듈 전역변수
+                var userInfo; //가입한 유저의 정보. object 타입
+                //파이어 베이스 초기화 코드
+                var config = {
+                    apiKey: "AIzaSyCweXAFVhwjG8cglNBGgGkelKW4trxFUxM",
+                    authDomain: "webproject-cc0c8.firebaseapp.com",
+                    databaseURL: "https://webproject-cc0c8.firebaseio.com",
+                    projectId: "webproject-cc0c8",
+                    storageBucket: "webproject-cc0c8.appspot.com",
+                    messagingSenderId: "1019716028105",
+                    appId: "1:1019716028105:web:6cb6a7ee21811dc2f66f18",
+                    measurementId: "G-RF6V6XKLVQ"
+                };
+                firebase.initializeApp(config);
 
-                <div class="friend">
-                    <img src="images/user.png" />
-                    <p>
-                        <strong>Tomas Kennedy</strong>
-                        <span>tomaskennedy@gmail.com</span>
-                    </p>
-                </div>
+                firebaseEmailAuth = firebase.auth();
+                firebaseDatabase = firebase.database();
+                function getUrlParams() {
+                    var params = {};
+                    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (str, key, value) { params[key] = value; });
+                    return params;
+                }
+                var oParams = getUrlParams();
+                var uName = decodeURI(oParams.myName, "UTF-8");
 
-                <div class="friend">
-                    <img src="images/user.png" />
-                    <p>
-                        <strong>Enrique Sutton</strong>
-                        <span>enriquesutton@gmail.com</span>
-                    </p>
-                </div>
+                var newFriendsDiv = document.createElement("div");
+                newFriendsDiv.setAttribute("id", "friends");
+                document.getElementById("friendslist").appendChild(newFriendsDiv);
 
-                <div class="friend">
-                    <img src="images/user.png" />
-                    <p>
-                        <strong> Darnell Strickland</strong>
-                        <span>darnellstrickland@gmail.com</span>
-                    </p>
-                </div>
+                var msgsref = firebase.database().ref("msgs/");
+                msgsref.on('child_added', function (snapshot) {
+                    var len = uName.length;
+                    var owner = snapshot.key.substring(0, len);
+                    var roomName = snapshot.key.substring(len);
+                    //console.log('방주인은:'+owner);
+                    //console.log('채팅하고있는사람:'+roomName);
+                    if (owner == uName) {
+                        console.log(roomName); // 여기 roomName을 방 이름으로 하면 될듯.
+                        //------------------------Create Element Part START-------------------------
 
-                <div id="search">
-                    <input type="text" id="searchfield" value="Search contacts..." />
-                </div>
+                        //friends div
 
+                        var newFriendDiv = document.createElement("div");
+                        newFriendDiv.setAttribute("class", "friend");
+
+                        var icon = document.createElement("img");
+                        icon.src = "images/user.png";
+
+                        var newP = document.createElement("p");
+                        var newStrong = document.createElement("strong");
+                        newStrong.innerHTML = roomName;  //DB에서 받은 사용자 이름 넣을것.
+                        var newSpan = document.createElement("span");
+                        //newSpan.innerHTML = "대화상대이메일";   //DB에서 받은 사용자이메일 넣을것.
+
+                        //자식관계설정
+                        newP.appendChild(newStrong);
+                        newP.appendChild(newSpan);
+
+                        newFriendDiv.appendChild(icon);
+                        newFriendDiv.appendChild(newP);
+
+                        newFriendsDiv.appendChild(newFriendDiv);
+
+
+                        //------------------------Create Element Part END-------------------------
+                    }
+
+                });
+                //------------------------DB Reference Part END-----------------------------
+
+            </script>
+            <div id="search">
+                <input type="text" id="searchfield" value="Search contacts..." />
             </div>
 
         </div>
 
-        <div id="chatview" class="p1">
-            <div id="profile">
+    </div>
 
-                <div id="close">
-                    <div class="cy"></div>
-                    <div class="cx"></div>
-                </div>
+    <div id="chatview" class="p1">
+        </script>
+        <!--스크립트 부분. 자신의 스크립트 코드로 변경하세요! -->
+        <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+        <script>
+            var oParams = getUrlParams();
+            var myName = decodeURI(oParams.myName, "UTF-8");
+            var other;
 
-                <p>대화상대 이름</p>
-                <span>대화상대 이메일</span>
+            //파이어 베이스 초기화 코드
+            var config = {
+                apiKey: "AIzaSyCweXAFVhwjG8cglNBGgGkelKW4trxFUxM",
+                authDomain: "webproject-cc0c8.firebaseapp.com",
+                databaseURL: "https://webproject-cc0c8.firebaseio.com",
+                projectId: "webproject-cc0c8",
+                storageBucket: "webproject-cc0c8.appspot.com",
+                messagingSenderId: "1019716028105",
+                appId: "1:1019716028105:web:6cb6a7ee21811dc2f66f18",
+                measurementId: "G-RF6V6XKLVQ"
+            };
+            firebase.initializeApp(config);
+            var firebaseDatabase = firebase.database();
+            var test_type = 0;
+
+            const ocontainer = document.getElementById("chat-messages");
+
+
+            /*
+             * type
+             *      0 : mytalk
+             *      1 : othertalk
+             */
+            function jstalktheme_addmsg(type, name, time, msg) {
+                var ocontainer = document.getElementById("chat-messages");
+
+                var onewmsg = document.createElement("div");
+
+                var onewblank = document.createElement("div");
+
+                if (type) {
+                    onewmsg.setAttribute("class", "message");
+                } else {
+                    onewmsg.setAttribute("class", "message right")
+                }
+
+                //프로필 이미지(고정)
+                var profimg = document.createElement("img");
+                profimg.src = "images/user.png";
+                onewmsg.appendChild(profimg);
+
+                //메시지 말풍선 표시
+                var bubble = document.createElement("div");
+                bubble.setAttribute("class", "bubble");
+                bubble.innerHTML = msg;
+
+                var corner = document.createElement("div");
+                corner.setAttribute("class", "corner");
+                bubble.appendChild(corner);
+
+                //보낸 시간
+                var corner_span = document.createElement("span");
+                corner_span.innerHTML = time;
+                bubble.appendChild(corner_span);
+
+                //메시지 완성
+                onewmsg.appendChild(bubble);
+
+                //채팅창에 추가
+                ocontainer.appendChild(onewmsg);
+
+                var objDiv = document.getElementById("chat-messages"); 
+                objDiv.scrollTop = objDiv.scrollHeight;
+            }
+
+            function sendmsg(from, to, text, time) {
+                var roomID = from + to;
+                var roomID2 = to + from;
+                var d = new Date();
+                var s = d.getSeconds();
+                var msgKey = time + '@msg' + s;
+
+                var ref = firebaseDatabase.ref("msgs/" + roomID + '/' + msgKey); //저장될 곳을 users라는 부모 키를 레퍼런스로 지정.
+                //저장 형식
+                var obj = {
+                    name: from,
+                    time: time,
+                    message: text
+                };
+
+                ref.set(obj); // 고유한 자식 키가 하나 생셩이 되면서 json 삽입
+                var ref2 = firebaseDatabase.ref("msgs/" + roomID2 + '/' + msgKey); //저장될 곳을 users라는 부모 키를 레퍼런스로 지정.
+                //저장 형식
+                var obj = {
+                    name: from,
+                    time: time,
+                    message: text
+                };
+
+                ref2.set(obj); // 고유한 자식 키가 하나 생셩이 되면서 json 삽입
+            }
+
+            function jstalktheme_testfunc() {
+                var otxtmsg = document.getElementById("jstalktheme_testmsg");
+
+                var d = new Date();
+                var ampm = (d.getHours() > 12 ? "PM" : "AM");
+                var h = (d.getHours() > 12 ? d.getHours() - 12 : d.getHours());
+                var m = d.getMinutes();
+                sendmsg(myName, other, otxtmsg.value.replace("\n", "<br />\n"), ampm + " " + h + ":" + m);
+                //jstalktheme_addmsg(0,otherName, ampm+" "+h+":"+m, otxtmsg.value.replace("\n","<br />\n"));
+            }
+
+            function setOthername(otherName){other = otherName;}
+
+            function readmsg(otherName) {
+                //var otherName = '이효동';
+                clear();
+                console.log('myname : ' + myName);
+                console.log('opponent : ' + otherName);
+                var chatref = firebase.database().ref("msgs/" + myName + otherName + '/');
+                chatref.on('child_added', function (data) {
+                    if (data.val().name == myName) {
+                        jstalktheme_addmsg(0, myName, data.val().time, data.val().message);
+                    }
+                    else {
+                        jstalktheme_addmsg(1, otherName, data.val().time, data.val().message);
+                    }
+                });
+            }
+
+            function clear() {
+                var cell = document.getElementById("chat-messages");
+                while (cell.hasChildNodes()) {
+                    cell.removeChild(cell.firstChild);
+                }
+            }
+
+        </script>
+        <div id="profile">
+
+            <div id="close">
+                <div class="cy"></div>
+                <div class="cx"></div>
             </div>
-            <div id="chat-messages">
-                <label>Thursday 02</label>
 
-                <div class="message">
-                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/1_copy.jpg" />
-                    <div class="bubble">
-                        내 메시지
-                        <div class="corner"></div>
-                        <span>경과 시간</span>
-                    </div>
-                </div>
+            <p id="Opponent">대화상대 이름</p>
+        </div>
+        <div id="chat-messages">
+            <label>Thursday 02</label>
 
-                <div class="message right">
-                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/2_copy.jpg" />
-                    <div class="bubble">
-                        상대 메시지
-                        <div class="corner"></div>
-                        <span>경과 시간</span>
-                    </div>
-                </div>
-            </div>
 
-            <div id="sendmessage">
-                <input type="text" value="Send message..." />
-                <button id="send"></button>
-            </div>
-
+        </div>
+        <div id="sendmessage">
+            <input type="text" id="jstalktheme_testmsg" value="Send message..."
+                onkeypress="if(event.keyCode==13){ jstalktheme_testfunc(); this.value=''; return false; }" />
+            <button id="send" onclick="jstalktheme_testfunc();"></button>
         </div>
     </div>
+
 
 
 </body>
