@@ -34,8 +34,8 @@
     var oParams = getUrlParams();
     console.log(oParams);
     var uid = oParams.uid;
+    console.log(oParams.uid);
     var userName;
-    console.log(uid);
 
     //파이어 베이스 초기화 코드
     var config = {
@@ -106,8 +106,8 @@
 
         <h1 class="my-4">Menu</h1>
         <div class="list-group">
-          <a href="#" class="list-group-item">나눔 해요</a>
-          <a href="#" class="list-group-item">나눔 받아요</a>
+          <a class="list-group-item" id="menu_output">나눔 해요</a>
+          <a class="list-group-item" id="menu_input">나눔 받아요</a>
         </div>
 
       </div>
@@ -292,42 +292,30 @@
     var db = firebase.firestore();
     var outputRef = db.collection("output");
     var i = 1;
-    outputRef.orderBy("time", "desc").limit(6).get().then(function (querySnapshot) {
 
+    outputRef.orderBy("time", "desc").limit(6).get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         console.log(doc.id, " => ", doc.data());
         var docdata = doc.data();
 
-        var starsRef = storageRef.child(docdata.image);
-        // Get the download URL
-        starsRef.getDownloadURL().then(function (url) {
-          $("#view_image_" + i).attr("src", url);
-          $("#view_name_" + i).text(docdata.title);
-          $("#view_contents_" + i).text(docdata.contents);
-          $("#view_location_" + i).text(String(docdata.location._lat) + String(docdata.location._long));
-        }).catch(function (error) {
-
-          switch (error.code) {
-            case 'storage/object-not-found':
-              // File doesn't exist
-              break;
-
-            case 'storage/unauthorized':
-              // User doesn't have permission to access the object
-              break;
-
-            case 'storage/canceled':
-              // User canceled the upload
-              break;
-
-            case 'storage/unknown':
-              // Unknown error occurred, inspect the server response
-              break;
-          }
-
-        }).then(function () { i++; });
+        $("#test").append(
+        "<td>"+
+          "<a href=/bbs/content.bbs?articleNumber=${article.articleNumber}&pageNum=${pageNum}>"+docdata.title+"</a>"+
+        "</td>"+
+        "<td>"+docdata.username+"</td>"+
+        "<td>"+docdata.date+"</td>"
+        );
       });
     });
+
+    $("#menu_output").click(function () {
+      window.location.href = "./board_output.html?" + "uid=" + uid;
+    });
+
+    $("#menu_input").click(function () {
+      window.location.href = "./board_input.html?" + "uid=" + uid;
+    });
+
   </script>
 </body>
 
