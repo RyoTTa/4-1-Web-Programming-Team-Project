@@ -232,6 +232,10 @@
         <script>
             var oParams = getUrlParams();
             var myName = decodeURI(oParams.myName, "UTF-8");
+            //------------------------------------------
+            var redir = oParams.redir;
+            console.log(redir);
+            //------------------------------------------
             var other;
             var chatref = null;
 
@@ -327,6 +331,15 @@
                 ref2.set(obj); // 고유한 자식 키가 하나 생셩이 되면서 json 삽입
             }
 
+            function get_timestring(){
+                var d = new Date();
+                var ampm = (d.getHours() > 12 ? "PM" : "AM");
+                var h = (d.getHours() > 12 ? d.getHours() - 12 : d.getHours());
+                var m = d.getMinutes();
+
+                return ampm + " " + h + ":" + m;
+            }
+
             function jstalktheme_testfunc() {
                 var otxtmsg = document.getElementById("jstalktheme_testmsg");
 
@@ -363,6 +376,15 @@
                 }
                 if (chatref != null) chatref.off();
             }
+             //------------------------------------------
+             if(redir != null){
+                //댓글에서 채팅 신청을 통해 페이지에 접근한 경우
+                //상대 이름
+                var opname = decodeURI(oParams.opName);
+                //최초 메시지 보내며 테이블 생성
+                sendmsg(myName, opname, "대화를 신청했습니다.", get_timestring());
+            }
+            //------------------------------------------
 
         </script>
         <div id="profile">

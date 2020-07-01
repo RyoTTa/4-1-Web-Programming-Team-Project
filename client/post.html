@@ -9,6 +9,19 @@
     <meta name="author" content="">
 
     <style>
+        #chatreq_writer{
+            float:right;
+        }
+
+        #post_username{
+            font-size:22px;
+        }
+
+        #post_writer{
+            display:flex;
+            flex-direction: row;
+        }
+
         #comments_container {
             background-color: rgb(220, 220, 220);
         }
@@ -21,29 +34,40 @@
         }
 
         .comment_info {
-            display: flex;
-            flex-direction: row;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            grid-auto-rows: minmax(50px, auto);
+
             width: 100%;
-            height: 30%;
-            margin-top: 10px;
+            height: 15%;
+            margin-top: 20px;
             border-bottom: 2px solid rgb(240, 240, 240);
+
         }
 
         .comment_name {
+            width: 100px !important;
             font-size: 20px;
             margin-left: 15px;
             margin-bottom: 10px;
+
         }
 
         .comment_date {
             font-size: 15px;
-            margin-left: 80%;
-
+            margin-left: 70%;
         }
 
         .comment_content {
             font-size: 12px;
             padding: 20px;
+        }
+
+        .chatreqbtn {
+            width: 100px !important;
+            height: 40px;
+            margin-left: 100px;
         }
     </style>
 
@@ -119,7 +143,7 @@
                             <form name="form" id="form" role="form" method="post"
                                 action="${pageContext.request.contextPath}/board/saveBoard">
 
-                                <div class="mb-3">
+                                <div class="mb-3" id="postwriter">
                                     <div id="post_username" style="width:80%; border-color: black;">작성자</div>
                                 </div>
 
@@ -166,37 +190,12 @@
                                             placeholder="댓글을 입력해 주세요"
                                             style="width:90%; height:15%;margin-left:5px;"></textarea>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                            style="height:80px; width: 80px; margin-left:10px;">입력
+                                            style="height:80px; width: 80px; margin-left:10px;"
+                                            onclick="writeNewComment()">입력
                                         </button>
                                     </div>
 
                                 </div>
-
-                                <div class="comment_item">
-                                    <div class="comment_info">
-                                        <div class="comment_name">이정우</div>
-                                        <div class="comment_date">20/07/01</div>
-                                    </div>
-                                    <div class="comment_content">잘 보고 갑니다. 저도 하나 사고싶네요~</div>
-                                </div>
-                                <div class="comment_item">
-                                    <div class="comment_info">
-                                        <div class="comment_name">이름</div>
-                                        <div class="comment_date">20/07/01</div>
-                                    </div>
-                                    <div class="comment_content">댓글 내용</div>
-                                </div>
-                                <div class="comment_item">
-                                    <div class="comment_info">
-                                        <div class="comment_name">이름</div>
-                                        <div class="comment_date">20/07/01</div>
-                                    </div>
-                                    <div class="comment_content">댓글 내용</div>
-                                </div>
-                            </div>
-
-
-
                         </div>
 
                     </article>
@@ -250,12 +249,35 @@
         var storageRef = storage.ref();
 
         var db = firebase.firestore();
+        var rdb = firebase.database();
         var outputRef = db.collection(func).doc(postid);
 
         var firebaseDatabase = firebase.database();
         var userref = firebase.database().ref("users/");
 
-        
+         //-----------------작성자에게 대화신청--------------
+         var writer = document.getElementById("post_username").innerHTML;
+        console.log(writer);
+
+        var wref = rdb.ref('users/' + uid);
+        wref.once('value').then(function (snapshot) {
+            var data = snapshot.val();
+            if (data != null && data.name != writer) {
+                //작성자와 현재 사용자가 다름 -> 대화신청 버튼 생성
+                var chatreq_btn = document.createElement("button");
+                chatreq_btn.setAttribute("id", "chatreq_writer");
+                chatreq_btn.setAttribute("class", "btn btn-sm btn-primary chatreqbtn");
+                chatreq_btn.innerHTML = "대화 신청";
+                chatreq_btn.setAttribute("onclick", "redir_chat_writer()");
+
+                var post_w = document.getElementById("postwriter");
+                post_w.appendChild(chatreq_btn);
+                //.appendChild(chatreq_btn);
+            }
+        })
+
+        //------------------------------------------------
+
         outputRef.get().then(function (doc) {
             docdata = doc.data();
             console.log(doc.data());
@@ -299,6 +321,152 @@
             });
 
         });
+
+        //댓글 로딩
+        var comref = rdb.ref('Comment').orderByChild('PostID').equalTo(postid);
+        var comid = 0;
+        //Comment의 PostID를 참조해 게시글과 댓글을 매칭
+        comref.once('value', function (datasnapshot) {
+            datasnapshot.forEach(childsnapshot => {
+                //각 댓글을 출력
+                var childData = childsnapshot.val();
+                console.log(childData);
+                var content = childData.Content;    //댓글내용
+                var writer = childData.Writer;      //댓글 작성자
+                var date = childData.Date;          //작성날짜
+                var namelist = [];
+
+                /*
+                <div class="comment_item">
+                                    <div class="comment_info">
+                                        <div class="comment_name">이정우</div>
+                                        <div class="comment_date">20/07/01</div>
+                                    </div>
+                                    <div class="comment_content">잘 보고 갑니다. 저도 하나 사고싶네요~</div>
+                                </div>
+                */
+
+                var comment_item = document.createElement("div");
+                comment_item.setAttribute("class", "comment_item");
+
+                var comment_info = document.createElement("div");
+                comment_info.setAttribute("class", "comment_info");
+
+                var comment_name = document.createElement("p");
+                comment_name.setAttribute("id", "comment_name" + String(comid));
+                comment_name.setAttribute("class", "comment_name");
+                comment_name.innerHTML = writer;
+
+                comment_info.appendChild(comment_name);
+
+                //----------------------------------------------------
+                //댓글쓴이 본인 체크
+
+                var nref = rdb.ref('users/' + uid);
+                var ret;
+                nref.once('value').then(function (snapshot) {
+                    var udata = snapshot.val();
+                    var uname = udata.name;
+
+                    console.log('in check : ' + comid);
+
+                    //var comname = document.getElementById("comment_name" + String(comid)).innerText;
+                    console.log(comment_name.innerHTML);
+
+                    if (comment_name.innerHTML != uname) {
+                        var chatreq_btn = document.createElement("button");
+                        chatreq_btn.setAttribute("id", "chatreq" + String(comid));
+                        chatreq_btn.setAttribute("class", "btn btn-primary chatreqbtn");
+                        chatreq_btn.innerHTML = "대화신청";
+                        chatreq_btn.setAttribute("onclick", "redir_chat(" + comid + ")");
+                        comment_info.appendChild(chatreq_btn);
+                    }
+                    
+                //----------------------------------------------------
+
+                var comment_date = document.createElement("div");
+                comment_date.setAttribute("class", "comment_date");
+                comment_date.innerHTML = date;
+
+                var comment_content = document.createElement("div");
+                comment_content.setAttribute("class", "comment_content");
+                comment_content.innerHTML = content;
+
+                comment_item.appendChild(comment_info);
+                comment_item.appendChild(comment_content);
+
+
+                comment_info.appendChild(comment_date);
+
+                var container = document.getElementById("comments_container");
+                container.appendChild(comment_item);
+                comid += 1;
+                });
+
+            });
+        });
+
+
+        function redir_chat(cid) {
+            var nref = rdb.ref('users/' + uid);
+            console.log(uid);
+            console.log("comment_name" + String(cid));
+            var opname = document.getElementById("comment_name" + String(cid)).innerText;
+            console.log(opname);
+            nref.once('value').then(function (snapshot) {
+                var udata = snapshot.val();
+                var uname = udata.name;
+                console.log(udata);
+                window.location.href = "./stuff.html?" + "uid=" + uid + "&myName=" + udata.name
+                    + "&redir=comment" + "&opName=" + opname;
+            });
+        }
+
+        function redir_chat_writer() {
+            var opname = document.getElementById("post_username").innerHTML;
+            var nref = rdb.ref('users/' + uid);
+            console.log(opname);
+            nref.once('value').then(function (snapshot) {
+                var udata = snapshot.val();
+                var uname = udata.name;
+                console.log(udata);
+                window.location.href = "./stuff.html?" + "uid=" + uid + "&myName=" + udata.name
+                  + "&redir=comment" + "&opName=" + opname;
+            });
+        }
+
+        function writeNewComment() {
+            var content = document.getElementById("content").value;   //댓글 내용
+            console.log('write : ' + content);
+
+            //빈 댓글 체크
+            if (content == "") return;
+            var userref = rdb.ref('users/' + uid);
+            userref.once('value').then(function (snapshot) {
+                //사용자 이름을 uid를 통해 받아옴(동기)
+                var userdata = snapshot.val();
+                var username = userdata.name;
+
+                var date = new Date();
+                var year = date.getFullYear();
+                var month = date.getMonth()+1;
+                var day = date.getDate();
+
+                var Timestamp = String(year) + '/' + String(month) + '/' + String(day);
+
+                var writeref = rdb.ref('Comment');
+                var obj = {
+                    PostID: postid,
+                    Content: content,
+                    Writer: username,
+                    Date: Timestamp,
+                }
+
+                writeref.push(obj);
+                location.reload();
+            });
+
+        }
 
         $("#main_chat").click(function () {
             userref.once('value', function (snapshot) {
