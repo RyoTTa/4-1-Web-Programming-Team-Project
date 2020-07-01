@@ -57,9 +57,11 @@
       {
         userName = childSnapshot.val().name;
       }
-    })
-  $("#chat").attr("href","./stuff.html?myName="+encodeURI(userName,"UTF-8"));
+    });  
+    $("#chat").attr("href","./stuff.html?myName="+encodeURI(userName,"UTF-8"));
+    $("#mypage").attr("href","./mypage.html?uid="+uid);
   });
+
   </script>
 
   <!-- Navigation -->
@@ -79,7 +81,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./mypage.html">My Page</a>
+            <a id=mypage class="nav-link" href="./mypage.html">My Page</a>
           </li>
           <li class="nav-item">
             <a id="chat" class="nav-link" href="./stuff.html?">Chatting</a>
