@@ -416,7 +416,7 @@
       $('.give-table').css("display", "none");
 
       $("#input_table").html("");
-      inputRef.orderBy("time", "desc").limit(6).get().then(function (querySnapshot) {
+      inputRef.orderBy("time", "desc").limit(15).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           console.log(doc.id, " => ", doc.data());
           var docdata = doc.data();
