@@ -19,7 +19,9 @@
 </head>
 
 <body>
-
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="js/home.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
   <!--스크립트 부분. 자신의 스크립트 코드로 변경하세요! -->
   <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
@@ -48,20 +50,21 @@
     };
     firebase.initializeApp(config);
     var firebaseDatabase = firebase.database();
-
-  var userref = firebase.database().ref("users/");
-  userref.once('value',function(snapshot){
-    snapshot.forEach(function(childSnapshot){
-      var childkey = childSnapshot.key;
-      if(childkey == uid)
-      {
-        userName = childSnapshot.val().name;
-      }
-    });  
-    $("#chat").attr("href","./stuff.html?myName="+encodeURI(userName,"UTF-8"));
-    $("#mypage").attr("href","./mypage.html?uid="+uid);
-  });
-
+    var userref = firebase.database().ref("users/");
+    $(document).on('click', '#mypage', function () {
+      window.location.href = "./mypage.html?uid=" + uid;
+    });
+    $(document).on('click', '#chat', function () {
+      userref.once('value', function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+          var childkey = childSnapshot.key;
+          if (childkey == uid) {
+            userName = childSnapshot.val().name;
+            window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8")
+          }
+        });
+      });
+    });
   </script>
 
   <!-- Navigation -->
@@ -81,10 +84,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <a id=mypage class="nav-link" href="./mypage.html">My Page</a>
+            <a id="mypage" class="nav-link">My Page</a>
           </li>
           <li class="nav-item">
-            <a id="chat" class="nav-link" href="./stuff.html?">Chatting</a>
+            <a id="chat" class="nav-link">Chatting</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="./index.html">Logout</a>
@@ -269,9 +272,7 @@
   </footer>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="js/home.js"></script>
+
 
   <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>

@@ -138,8 +138,23 @@
     };
     firebase.initializeApp(config);
     var firebaseDatabase = firebase.database();
-
+    $(document).on('click', '#home', function () {
+      window.location.href = "./home.html?uid=" + uid;
+    });
     var userref = firebase.database().ref("users/");
+    $(document).on('click', '#chat', function () {
+      userref.on('value', function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+          var childkey = childSnapshot.key;
+          var userName;
+          if (childkey == uid) {
+            userName = childSnapshot.val().name;
+            window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8")
+          }
+        });
+      });
+    });
+
     userref.on('value', function (snapshot) {
       snapshot.forEach(function (childSnapshot) {
         var childkey = childSnapshot.key;
@@ -157,17 +172,14 @@
           console.log(star);
           console.log(Math.round(star));
           $("#name").text(userName);
-        $("#email").text(userEmail);
-        $("#chat").attr("href", "./stuff.html?myName=" + encodeURI(userName, "UTF-8"));
-        $("#home").attr("href", "./home.html?uid=" + uid);
+          $("#email").text(userEmail);
         }
-        
         for (var i = 0; i < star; i++) {
           $('#star' + i).text('★');
         }
       });
     });
-    
+
   </script>
 
   <!-- Navigation -->
@@ -182,7 +194,7 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a id='home' class="nav-link" href="./home.html">Home
+            <a id='home' class="nav-link">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
@@ -190,7 +202,7 @@
             <a class="nav-link" href="#">My Page</a>
           </li>
           <li class="nav-item">
-            <a id='chat' class="nav-link" href="./stuff.html">Chatting</a>
+            <a id='chat' class="nav-link" >Chatting</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="./index.html">Logout</a>
