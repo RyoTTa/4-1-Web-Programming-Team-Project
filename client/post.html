@@ -8,6 +8,45 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <style>
+        #comments_container {
+            background-color: rgb(220, 220, 220);
+        }
+
+        .comment_item {
+            background-color: white;
+            margin-top: 10px;
+            border: 2px solid rgb(240, 240, 240);
+            border-radius: 5px;
+        }
+
+        .comment_info {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 30%;
+            margin-top: 10px;
+            border-bottom:2px solid rgb(240, 240, 240);
+        }
+
+        .comment_name {
+            font-size: 20px;
+            margin-left: 15px;
+            margin-bottom:10px;
+        }
+
+        .comment_date {
+            font-size: 15px;
+            margin-left: 80%;
+            
+        }
+
+        .comment_content {
+            font-size: 12px;
+            padding: 20px;
+        }
+    </style>
+
     <title>나눔 해요 글 등록하기</title>
 
     <!-- Bootstrap core CSS -->
@@ -31,42 +70,6 @@
 
     </script>
 
-
-
-    <style>
-        .comment_item {
-            width: 100%;
-            height: 30%;
-
-            display: flex;
-            flex-direction: column;
-            background-color: indianred;
-        }
-
-        .comment_info {
-            display: flex;
-            flex-direction: row;
-            height: 30%;
-            margin-top: 10px;
-            background-color: gray;
-        }
-
-        .comment_name {
-            font-size: 20px;
-            margin-left: 15px;
-            background-color: khaki;
-        }
-
-        .comment_date {
-            font-size: 15px;
-            margin-left: 20px;
-        }
-
-        .comment_content {
-            font-size: 18px;
-            padding: 20px;
-        }
-    </style>
 </head>
 
 <body>
@@ -123,16 +126,16 @@
 
                         <div class="container" role="main">
 
-                            <h2 id="post_title">게시글 제목</h2>
+                            <h1 id="post_title">게시글 제목</h1>
 
                             <form name="form" id="form" role="form" method="post"
                                 action="${pageContext.request.contextPath}/board/saveBoard">
-                                <div class="mb-3">
 
+                                <div class="mb-3">
                                     <div id="post_username" style="width:80%; border-color: black;">작성자</div>
                                 </div>
-                                <div class="mb-3">
 
+                                <div class="mb-3">
                                     <div id="post_time" style="width:80%; border-color: black;">작성일</div>
                                 </div>
                                 <div class="mb-3">
@@ -140,42 +143,55 @@
                                     <div id="post_location" style="width:80%; border-color: black;">위치정보들어갈 장소</div>
                                 </div>
 
-                                <div
-                                    style="width:100%; margin : 0 auto; background-color: rgb(240, 240, 240);">
-                                    <image id="post_image" style = "width:80%;">
+                                <div style="width:80%; margin : 0 auto; background-color: rgb(240, 240, 240); align-items: center;">
+                                    <image id="post_image" style = "width:100%;">
                                     </image>
                                 </div>
 
                                 <div class="mb-3" style="margin-top:30px;">
 
-                                    <div id="post_contents" class="jumbotron"
-                                        style="background-color: rgb(240, 240, 240);">게시글 내용</div>
+                                    <div id="post_contents" class="jumbotron"style="background-color: white; border:2px solid rgb(245, 245, 245); border-radius:1%;">게시글 내용</div>
 
                                 </div>
 
                                 <div style="float:right;">
-                                    <button type="button" class="btn btn-sm btn-primary" id="btnList">목록</button>
+                                    <button type="button" class="btn btn-sm btn-primary" id="btnList" style="width:70px; height: 40px; font-size:15px;">목록</button>
                                 </div>
 
-                                <div class="mb-3">
-
-                                    <label for="content">댓글 입력</label>
-
-                                    <div style="display:flex; flex-direction: row;">
-                                        <textarea class="form-control" rows="5" name="content" id="content"
-                                            placeholder="댓글을 입력해 주세요" style="width:80%; height:20%;"></textarea>
-                                        <button type="button" class="btn btn-sm btn-primary"
-                                            style="height:80px; width: 80px; margin-left:20px; margin-top:27px;">입력
-                                        </button>
-                                    </div>
-
-                                </div>
 
                             </form>
 
 
 
-                            <div style="margin-top:70px;background-color:gray; display:flex; flex-direction: column;">
+                            <div id="comments_container" class="container-fluid jumbotron" 
+                                style="margin-top:100px; padding-top:30px; background-color:rgb(245, 245, 245);">
+                                <div style="margin-bottom:20px; padding:10px; border: 2px solid rgb(240, 240, 240); 
+                                    border-radius:5px; background-color:rgb(250, 250, 250);align-items: center;">
+
+                                    <div style="display:flex; flex-direction: row; margin-top:10px; align-items: center;">
+                                        <textarea class="form-control" rows="3" name="content" id="content"
+                                            placeholder="댓글을 입력해 주세요" style="width:90%; height:15%;margin-left:5px;"></textarea>
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                            style="height:80px; width: 80px; margin-left:10px;">입력
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div class="comment_item">
+                                    <div class="comment_info">
+                                        <div class="comment_name">이정우</div>
+                                        <div class="comment_date">20/07/01</div>
+                                    </div>
+                                    <div class="comment_content">잘 보고 갑니다. 저도 하나 사고싶네요~</div>
+                                </div>
+                                <div class="comment_item">
+                                    <div class="comment_info">
+                                        <div class="comment_name">이름</div>
+                                        <div class="comment_date">20/07/01</div>
+                                    </div>
+                                    <div class="comment_content">댓글 내용</div>
+                                </div>
                                 <div class="comment_item">
                                     <div class="comment_info">
                                         <div class="comment_name">이름</div>
