@@ -253,7 +253,7 @@
         var storageRef = storage.ref();
 
         var db = firebase.firestore();
-        var outputRef = db.collection("output").doc(postid);
+        var outputRef = db.collection(func).doc(postid);
 
         outputRef.get().then(function (doc) {
             docdata = doc.data();
