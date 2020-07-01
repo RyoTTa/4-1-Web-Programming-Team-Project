@@ -38,10 +38,10 @@
 
     }
 
-    .share-title{
-      margin-bottom:10px;
+    .share-title {
+      margin-bottom: 10px;
       font-family: 'Jua', sans-serif;
-      font-size:30px;
+      font-size: 30px;
     }
 
     /* Bootstrap 수정 */
@@ -131,10 +131,8 @@
       $(this).parent().children('a').removeClass('on');  /* 별점의 on 클래스 전부 제거 */
       $(this).addClass("on").prevAll('a').addClass('on'); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
       return false;
-    });
-    
+    });    
   </script>
-
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
@@ -177,41 +175,23 @@
       </div>
       <!-- /.col-lg-3 -->
 
-      <div class="col-lg-9" >
+      <div class="col-lg-9">
 
         <div style="margin-top:100px;">
-          <div class="share-title"> < 나눔 받아요 > </div>
+          <div class="share-title">
+            < 나눔 받아요>
+          </div>
           <table class="table table-striped table-bordered table-hover">
             <thead>
               <tr>
-                <th width="10%">번호</th>
-                <th width="40%">제목</th>
+                <th width="50%">제목</th>
                 <th width="10%">작성자</th>
                 <th width="10%">평점</th>
                 <th width="20%">작성일</th>
-                <th width="10%">조회</th>
               </tr>
             </thead>
-            <tbody>
-              <c:forEach var="article" items="${articles}" varStatus="status">
-                <tr>
-                  <td>${article.articleNumber}</td>
-                  <td id="title">
-                    <c:if test="${article.depth > 0}">
-                      &nbsp;&nbsp;
-                    </c:if>
-                    <a
-                      href="/bbs/content.bbs?articleNumber=${article.articleNumber}&pageNum=${pageNum}">${article.title}</a>
-                    <c:if test="${article.hit >= 20}">
-                      <span class="hit">hit!</span>
-                    </c:if>
-                  </td>
-                  <td>${article.id}</td>
-                  <td>${article.score}</td>
-                  <td>${article.date}</td>
-                  <td>${article.view}</td>
-                <tr>
-              </c:forEach>
+            <tbody id = "test" >
+            
             </tbody>
           </table>
 
@@ -230,7 +210,6 @@
 
   </div>
   <!-- /.container -->
-
   <!-- Footer -->
   <footer class="py-5 bg-dark">
     <div class="container">
@@ -238,6 +217,10 @@
     </div>
     <!-- /.container -->
   </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+
   <script>
     function getUrlParams() {
       var params = {};
@@ -248,17 +231,63 @@
     console.log(oParams);
     var uid = oParams.uid;
     console.log(oParams.uid);
-    
 
-    $("#menu_output").click(function(){
-      window.location.href = "./board_output.html?"+"uid="+uid;
+
+    $("#menu_output").click(function () {
+      window.location.href = "./board_output.html?" + "uid=" + uid;
     });
 
-    $("#menu_input").click(function(){
-      window.location.href = "./board_input.html?"+"uid="+uid;
+    $("#menu_input").click(function () {
+      window.location.href = "./board_input.html?" + "uid=" + uid;
     });
-    
+
   </script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCweXAFVhwjG8cglNBGgGkelKW4trxFUxM",
+      authDomain: "webproject-cc0c8.firebaseapp.com",
+      databaseURL: "https://webproject-cc0c8.firebaseio.com",
+      storageBucket: "webproject-cc0c8.appspot.com",
+      projectId: "webproject-cc0c8"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var storage = firebase.storage();
+    var storageRef = storage.ref();
+
+    var db = firebase.firestore();
+    var outputRef = db.collection("input");
+
+    outputRef.orderBy("time", "desc").limit(6).get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(doc.id, " => ", doc.data());
+        var docdata = doc.data();
+        var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
+
+        $("#test").append(
+        "<tr>"+
+        "<td>"+
+          "<a href=/bbs/content.bbs?articleNumber=${article.articleNumber}&pageNum=${pageNum}>"+docdata.title+"</a>"+
+        "</td>"+
+        "<td>"+docdata.username+"</td>"+
+        "<td>"+docdata.username+"</td>"+
+        "<td>"+(datee.getMonth()+1)+"월 "+datee.getDate()+"일 "+datee.getHours()+"시"+"</td>"+
+        "</tr>"
+        );
+      });
+    });
+    
+
+    $("#menu_output").click(function () {
+      window.location.href = "./board_output.html?" + "uid=" + uid;
+    });
+
+    $("#menu_input").click(function () {
+      window.location.href = "./board_input.html?" + "uid=" + uid;
+    });
+
+  </script>
+
 
 </body>
 

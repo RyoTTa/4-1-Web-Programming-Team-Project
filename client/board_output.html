@@ -262,6 +262,7 @@
       querySnapshot.forEach(function (doc) {
         console.log(doc.id, " => ", doc.data());
         var docdata = doc.data();
+        var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
 
         $("#test").append(
         "<tr>"+
@@ -270,7 +271,7 @@
         "</td>"+
         "<td>"+docdata.username+"</td>"+
         "<td>"+docdata.username+"</td>"+
-        "<td>"+docdata.date+"</td>"+
+        "<td>"+(datee.getMonth()+1)+"월 "+datee.getDate()+"일 "+datee.getHours()+"시"+"</td>"+
         "</tr>"
         );
       });
