@@ -196,7 +196,7 @@
           </table>
 
           <div style="float:right; margin-bottom:10px;">
-            <button type="button" onclick="location.href='writepost.html'" class="btn btn-dark">작성하기</button>
+            <button type="button" onclick="output_write()"  class="btn btn-dark">작성하기</button>
           </div>
 
         </div>
@@ -267,7 +267,7 @@
         $("#test").append(
         "<tr>"+
         "<td>"+
-          "<a href=/bbs/content.bbs?articleNumber=${article.articleNumber}&pageNum=${pageNum}>"+docdata.title+"</a>"+
+          "<a href=./post.html?uid="+uid+"&func=output&postid="+doc.id+">"+docdata.title+"</a>"+
         "</td>"+
         "<td>"+docdata.username+"</td>"+
         "<td>"+docdata.username+"</td>"+
@@ -286,8 +286,12 @@
       window.location.href = "./board_input.html?" + "uid=" + uid;
     });
 
-  </script>
+    function output_write(){
+      window.location.href = "writepost.html?uid=" + uid +"&func=" + "output";
 
+    }
+  </script>
+  
 
 </body>
 

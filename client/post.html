@@ -34,37 +34,37 @@
 
 
     <style>
-        .comment_item{
-            width:100%;
-            height:30%;
+        .comment_item {
+            width: 100%;
+            height: 30%;
 
             display: flex;
             flex-direction: column;
             background-color: indianred;
         }
 
-        .comment_info{
-            display:flex;
+        .comment_info {
+            display: flex;
             flex-direction: row;
-            height:30%;
-            margin-top:10px;
+            height: 30%;
+            margin-top: 10px;
             background-color: gray;
         }
 
-        .comment_name{
+        .comment_name {
             font-size: 20px;
-            margin-left:15px;
+            margin-left: 15px;
             background-color: khaki;
         }
 
-        .comment_date{
-            font-size:15px;
+        .comment_date {
+            font-size: 15px;
             margin-left: 20px;
         }
 
-        .comment_content{
-            font-size:18px;
-            padding:20px;
+        .comment_content {
+            font-size: 18px;
+            padding: 20px;
         }
     </style>
 </head>
@@ -74,32 +74,32 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-          <img src="./images/LOGO.png" style="width: 40px; height: 40px;">
-          <a class="navbar-brand" href="home.html">&nbsp다 ~ 주라</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="home.html">Home
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="mypage.html">My Page</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="chat.html">Chatting</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="index.html">Logout</a>
-              </li>
-            </ul>
-          </div>
+            <img src="./images/LOGO.png" style="width: 40px; height: 40px;">
+            <a class="navbar-brand" href="home.html">&nbsp다 ~ 주라</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="home.html">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mypage.html">My Page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="chat.html">Chatting</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </nav>
+    </nav>
 
     <!-- Page Content -->
     <div class="container">
@@ -110,8 +110,8 @@
 
                 <h1 class="my-4">Menu</h1>
                 <div class="list-group">
-                    <a href="board.html" class="list-group-item">나눔 해요</a>
-                    <a href="giveboard.html" class="list-group-item">나눔 받아요</a>
+                    <a class="list-group-item" id="menu_output">나눔 해요</a>
+                    <a class="list-group-item" id="menu_input">나눔 받아요</a>
                 </div>
 
             </div>
@@ -123,30 +123,33 @@
 
                         <div class="container" role="main">
 
-                            <h2>게시글 제목</h2>
+                            <h2 id="post_title">게시글 제목</h2>
 
                             <form name="form" id="form" role="form" method="post"
                                 action="${pageContext.request.contextPath}/board/saveBoard">
                                 <div class="mb-3">
 
-                                    <div id="location_info" style="width:80%; border-color: black;">작성자</div>
+                                    <div id="post_username" style="width:80%; border-color: black;">작성자</div>
                                 </div>
                                 <div class="mb-3">
 
-                                    <div id="location_info" style="width:80%; border-color: black;">작성일</div>
+                                    <div id="post_time" style="width:80%; border-color: black;">작성일</div>
                                 </div>
                                 <div class="mb-3">
 
-                                    <div id="location_info" style="width:80%; border-color: black;">위치정보들어갈 장소</div>
+                                    <div id="post_location" style="width:80%; border-color: black;">위치정보들어갈 장소</div>
                                 </div>
 
                                 <div
-                                    style="width:80%; height: 60%; margin : 0 auto; background-color: rgb(240, 240, 240);">
-                                    이미지 들어갈 박스</div>
+                                    style="width:100%; margin : 0 auto; background-color: rgb(240, 240, 240);">
+                                    <image id="post_image" style = "width:80%;">
+                                    </image>
+                                </div>
 
                                 <div class="mb-3" style="margin-top:30px;">
 
-                                    <div class="jumbotron" style="background-color: rgb(240, 240, 240);">게시글 내용</div>
+                                    <div id="post_contents" class="jumbotron"
+                                        style="background-color: rgb(240, 240, 240);">게시글 내용</div>
 
                                 </div>
 
@@ -171,7 +174,7 @@
                             </form>
 
 
-                            
+
                             <div style="margin-top:70px;background-color:gray; display:flex; flex-direction: column;">
                                 <div class="comment_item">
                                     <div class="comment_info">
@@ -208,8 +211,90 @@
         <!-- /.container -->
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+    <script>
+        function getUrlParams() {
+            var params = {};
+            window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (str, key, value) { params[key] = value; });
+            return params;
+        }
+        var oParams = getUrlParams();
+        var uid = oParams.uid;
+        var func = oParams.func;
+        var postid = oParams.postid;
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyCweXAFVhwjG8cglNBGgGkelKW4trxFUxM",
+            authDomain: "webproject-cc0c8.firebaseapp.com",
+            databaseURL: "https://webproject-cc0c8.firebaseio.com",
+            storageBucket: "webproject-cc0c8.appspot.com",
+            projectId: "webproject-cc0c8"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        var storage = firebase.storage();
+        var storageRef = storage.ref();
+
+        var db = firebase.firestore();
+        var outputRef = db.collection("output").doc(postid);
+
+        outputRef.get().then(function (doc) {
+            docdata = doc.data();
+            console.log(doc.data());
+            var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
+          
+            $("#post_time").text((datee.getMonth()+1)+"월 "+datee.getDate()+"일 "+datee.getHours()+"시");
+            $("#post_title").text(doc.data().title);
+            $("#post_username").text(doc.data().username);
+            $("#post_location").text(doc.data().location._lat + " " + doc.data().location._long);
+            $("#post_contents").text(doc.data().contents);
+
+            var starsRef = storageRef.child(docdata.image);
+            console.log(docdata.image);
+            starsRef.getDownloadURL().then(function (url) {
+                $("#post_image").attr("src", url);
+            }).catch(function (error) {
+
+                switch (error.code) {
+                    case 'storage/object-not-found':
+                        // File doesn't exist
+                        break;
+
+                    case 'storage/unauthorized':
+                        // User doesn't have permission to access the object
+                        break;
+
+                    case 'storage/canceled':
+                        // User canceled the upload
+                        break;
+
+                    case 'storage/unknown':
+                        // Unknown error occurred, inspect the server response
+                        break;
+                }
+
+            });
+
+        });
 
 
+
+
+
+
+
+
+    </script>
+    <script>
+        $("#menu_output").click(function () {
+            window.location.href = "./board_output.html?" + "uid=" + uid;
+        });
+
+        $("#menu_input").click(function () {
+            window.location.href = "./board_input.html?" + "uid=" + uid;
+        });
+    </script>
 </body>
 
 </html>
