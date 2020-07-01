@@ -11,7 +11,7 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <title>Shop Homepage - Start Bootstrap Template</title>
+  <title>다~주라</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -384,13 +384,17 @@
           var docdata = doc.data();
           var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
           if (uid == docdata.uid) {
+            var valid = 'X'
+            if(docdata.valid == 'false'){
+              valid = 'O'
+            }
             $("#output_table").append(
               "<tr>" +
               "<td>" +
               "<a href=./post.html?uid=" + uid + "&func=output&postid=" + doc.id + ">" + docdata.title + "</a>" +
               "</td>" +
               "<td>" + (datee.getMonth() + 1) + "월 " + datee.getDate() + "일 " + datee.getHours() + "시" + "</td>" +
-              "<td>" + docdata.valid +
+              "<td>" + valid +
               "</tr>"
             );
           }
@@ -411,13 +415,17 @@
           var docdata = doc.data();
           var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
           if (uid == docdata.uid) {
+            var valid = 'X'
+            if(docdata.valid == 'false'){
+              valid = 'O'
+            }
             $("#input_table").append(
               "<tr>" +
               "<td>" +
               "<a href=./post.html?uid=" + uid + "&func=output&postid=" + doc.id + ">" + docdata.title + "</a>" +
               "</td>" +
               "<td>" + (datee.getMonth() + 1) + "월 " + datee.getDate() + "일 " + datee.getHours() + "시" + "</td>" +
-              "<td>" + docdata.valid +
+              "<td>" + valid +
               "</tr>"
             );
           }

@@ -47,7 +47,7 @@
         }
     </style>
 
-    <title>나눔 해요 글 등록하기</title>
+    <title>다~주라</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -259,7 +259,7 @@
         outputRef.get().then(function (doc) {
             docdata = doc.data();
             console.log(doc.data());
-            if(uid == docdata.uid.trim()){
+            if(uid == docdata.uid){
                 $("#btnValid").attr("disabled",false);
                 console.log(uid,"  "+docdata.uid);
             }
@@ -317,6 +317,7 @@
                 valid : "false"
             }).then(function() {
                 alert("비활성화 되었습니다.");
+                history.go(-1);
             })
             .catch(function(){
                 alert("에러");
