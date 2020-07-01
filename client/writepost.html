@@ -91,7 +91,9 @@
                 time: firebase.firestore.FieldValue.serverTimestamp(),
                 title: title,
                 useremail: useremail,
-                username: username
+                username: username,
+                uid:uid,
+                valid:"true"
             })
                 .then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);

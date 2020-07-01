@@ -142,6 +142,7 @@
   <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
   <!--스크립트 부분. 자신의 스크립트 코드로 변경하세요! -->
   <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
   <script>
     function getUrlParams() {
       var params = {};
@@ -164,6 +165,11 @@
     };
     firebase.initializeApp(config);
     var firebaseDatabase = firebase.database();
+
+    var db = firebase.firestore();
+    var outputRef = db.collection("output");
+    var inputRef = db.collection("input");
+
     $(document).on('click', '#home', function () {
       window.location.href = "./home.html?uid=" + uid;
     });
@@ -208,14 +214,14 @@
     });
 
 
-    
-    $("#main_chat").click(function(){
+
+    $("#main_chat").click(function () {
       userref.once('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
           var childkey = childSnapshot.key;
           if (childkey == uid) {
             userName = childSnapshot.val().name;
-            window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8") +"&uid="+uid; 
+            window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8") + "&uid=" + uid;
           }
         });
       });
@@ -318,70 +324,28 @@
                 <table class="table table-striped table-bordered table-hover" style="table-layout: fixed; width: 100%;">
                   <thead>
                     <tr>
-                      <th width="10%">번호</th>
-                      <th width="40%">제목</th>
-                      <th width="10%">작성자</th>
-                      <th width="10%">평점</th>
+                      <th width="60%">제목</th>
                       <th width="20%">작성일</th>
-                      <th width="10%">조회</th>
+                      <th width="15%">삭제여부</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <c:forEach var="article" items="${articles}" varStatus="status">
-                      <tr>
-                        <td>${article.articleNumber}</td>
-                        <td id="title">
-                          <c:if test="${article.depth > 0}">
-                            &nbsp;&nbsp;
-                          </c:if>
-                          <a
-                            href="/bbs/content.bbs?articleNumber=${article.articleNumber}&pageNum=${pageNum}">${article.title}</a>
-                          <c:if test="${article.hit >= 20}">
-                            <span class="hit">hit!</span>
-                          </c:if>
-                        </td>
-                        <td>${article.id}</td>
-                        <td>${article.writeDate}</td>
-                        <td>${article.hit}</td>
-                        <td>${article.hit}</td>
-                      <tr>
-                    </c:forEach>
+                  <tbody id="output_table">
+
                   </tbody>
                 </table>
               </div>
 
               <div class="take-table">
-                <table class="table table-striped table-bordered table-hover">
+                <table class="table table-striped table-bordered table-hover" style="table-layout: fixed; width: 100%;">
                   <thead>
                     <tr>
-                      <th width="10%">번호</th>
-                      <th width="40%">제목</th>
-                      <th width="10%">작성자</th>
-                      <th width="10%">평점</th>
+                      <th width="60%">제목</th>
                       <th width="20%">작성일</th>
-                      <th width="10%">조회</th>
+                      <th width="15%">삭제여부</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <c:forEach var="article" items="${articles}" varStatus="status">
-                      <tr>
-                        <td>${article.articleNumber}</td>
-                        <td id="title">
-                          <c:if test="${article.depth > 0}">
-                            &nbsp;&nbsp;
-                          </c:if>
-                          <a
-                            href="/bbs/content.bbs?articleNumber=${article.articleNumber}&pageNum=${pageNum}">${article.title}</a>
-                          <c:if test="${article.hit >= 20}">
-                            <span class="hit">hit!</span>
-                          </c:if>
-                        </td>
-                        <td>${article.id}</td>
-                        <td>${article.writeDate}</td>
-                        <td>${article.hit}</td>
-                        <td>${article.hit}</td>
-                      <tr>
-                    </c:forEach>
+                  <tbody id="input_table">
+
                   </tbody>
                 </table>
               </div>
@@ -405,17 +369,61 @@
   <!-- /.container -->
 
   <script>
+
     $('.give-table').css("display", "none");
     $('.take-table').css("display", "none");
 
     $('#give-button').click(function () {
       $('.give-table').css("display", "block");
       $('.take-table').css("display", "none");
+
+      $("#output_table").html("");
+      outputRef.orderBy("time", "desc").limit(6).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          console.log(doc.id, " => ", doc.data());
+          var docdata = doc.data();
+          var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
+          if (uid == docdata.uid) {
+            $("#output_table").append(
+              "<tr>" +
+              "<td>" +
+              "<a href=./post.html?uid=" + uid + "&func=output&postid=" + doc.id + ">" + docdata.title + "</a>" +
+              "</td>" +
+              "<td>" + (datee.getMonth() + 1) + "월 " + datee.getDate() + "일 " + datee.getHours() + "시" + "</td>" +
+              "<td>" + docdata.valid +
+              "</tr>"
+            );
+          }
+        });
+
+      });
+
     });
 
     $('#take-button').click(function () {
       $('.take-table').css("display", "block");
       $('.give-table').css("display", "none");
+
+      $("#input_table").html("");
+      inputRef.orderBy("time", "desc").limit(6).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          console.log(doc.id, " => ", doc.data());
+          var docdata = doc.data();
+          var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
+          if (uid == docdata.uid) {
+            $("#input_table").append(
+              "<tr>" +
+              "<td>" +
+              "<a href=./post.html?uid=" + uid + "&func=output&postid=" + doc.id + ">" + docdata.title + "</a>" +
+              "</td>" +
+              "<td>" + (datee.getMonth() + 1) + "월 " + datee.getDate() + "일 " + datee.getHours() + "시" + "</td>" +
+              "<td>" + docdata.valid +
+              "</tr>"
+            );
+          }
+        });
+
+      });
     });
 
   </script>
@@ -440,10 +448,11 @@
     $("#main_home").click(function () {
       window.location.href = "./home.html?uid=" + uid;
     });
-    $("#main_logo").click(function(){
-      window.location.href = "./home.html?"+"uid="+uid;
+    $("#main_logo").click(function () {
+      window.location.href = "./home.html?" + "uid=" + uid;
     })
   </script>
+
 </body>
 
 </html>
