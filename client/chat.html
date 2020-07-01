@@ -67,7 +67,7 @@
    position: relative;
    width: 8px;
    height: 22px;
-   background: url(./chat_balloon_yellow.right.png) no-repeat;
+   background: url(./images/chat_balloon_yellow.right.png) no-repeat;
    z-index: 1;
 }
 
@@ -102,7 +102,7 @@
    position: relative;
    width: 8px;
    height: 22px;
-   background: url(./chat_balloon_white.left.png) no-repeat;
+   background: url(./images/chat_balloon_white.left.png) no-repeat;
    z-index: 1;
 }
 
@@ -215,7 +215,7 @@ function jstalktheme_addmsg(type, name, time, msg)
    {
       onewmsg.className="othertalk";
       onewmsg.innerHTML = 
-      "<div class=\"profile_image\" style=\"background: url(./profile_image.png) no-repeat;\">\n"+
+      "<div class=\"profile_image\" style=\"background: url(./images/profile_image.png) no-repeat;\">\n"+
       "</div>\n"+
       "<div class=\"box\">\n"+
       "<div class=\"profile_name\">\n"+
@@ -295,19 +295,6 @@ function jstalktheme_testfunc()
 }
 
 var chatref = firebase.database().ref("msgs/"+myName+otherName+'/');
-/*
-chatref.once('value',function(snapshot){
-   snapshot.forEach(function(childSnapshot){
-      var chatlist = childSnapshot.val();
-      if(chatlist.name == myName){
-         jstalktheme_addmsg(0,otherName, chatlist.time, chatlist.message);
-      }
-      else{
-         jstalktheme_addmsg(1,myName, chatlist.time, chatlist.message);
-      }
-   });
-});
-*/
 chatref.on('child_added',function(data){
    if(data.val().name == myName){
          jstalktheme_addmsg(0,myName, data.val().time, data.val().message);
