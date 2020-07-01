@@ -138,7 +138,14 @@
             console.log('title' + title);
             var contents = document.getElementById('content').value;
             console.log('contents' + contents);
-            var image = file.name;
+            var image
+            if(file == null )
+            {
+                image = "noimage.png";
+            }
+            else{
+                image = file.name;
+            }
             userref.on('value', function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     var childkey = childSnapshot.key;
@@ -147,15 +154,23 @@
                     if (childkey == uid) {
                         userName = childSnapshot.val().name;
                         userEmail = childSnapshot.val().email;
-                        storageRef.child(file.name).put(file).then(function (snapshot) {
-                            console.log(snapshot);
-                            console.log('success');
+                        if (image == "noimage.png") {
                             upload(contents, image, location, title, userEmail, userName);
-                        });
+                        }
+                        else {
+                            storageRef.child(image).put(file).then(function (snapshot) {
+                                console.log(snapshot);
+                                console.log('success');
+                                upload(contents, image, location, title, userEmail, userName);
+                            });
+                        }
 
                     }
                 });
             });
+        });
+        $(document).on('click', '#btnList', function () {
+            history.go(-1);
         });
 
         

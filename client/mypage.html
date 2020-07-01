@@ -205,6 +205,7 @@
           }
           else {
             star = starsum / starcount;
+            star = Math.round(star);
           }
           
           console.log(star);
@@ -384,7 +385,7 @@
       $('.take-table').css("display", "none");
 
       $("#output_table").html("");
-      outputRef.orderBy("time", "desc").limit(6).get().then(function (querySnapshot) {
+      outputRef.orderBy("time", "desc").limit(15).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           console.log(doc.id, " => ", doc.data());
           var docdata = doc.data();
