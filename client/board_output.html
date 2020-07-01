@@ -137,7 +137,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <img src="./images/LOGO.png" style="width: 40px; height: 40px;">
-      <a class="navbar-brand" href="home.html">&nbsp다 ~ 주라</a>
+      <a class="navbar-brand"  id="main_logo">&nbsp다 ~ 주라</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -145,15 +145,15 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="home.html">Home
+            <a class="nav-link" id="main_home">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="mypage.html">My Page</a>
+            <a class="nav-link" id="main_mypage">My Page</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="chat.html">Chatting</a>
+            <a class="nav-link" id="main_chat">Chatting</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="index.html">Logout</a>
@@ -242,14 +242,17 @@
     });
 
   </script>
-
+  <!--스크립트 부분. 자신의 스크립트 코드로 변경하세요! -->
   <script>
     var firebaseConfig = {
       apiKey: "AIzaSyCweXAFVhwjG8cglNBGgGkelKW4trxFUxM",
       authDomain: "webproject-cc0c8.firebaseapp.com",
       databaseURL: "https://webproject-cc0c8.firebaseio.com",
+      projectId: "webproject-cc0c8",
       storageBucket: "webproject-cc0c8.appspot.com",
-      projectId: "webproject-cc0c8"
+      messagingSenderId: "1019716028105",
+      appId: "1:1019716028105:web:6cb6a7ee21811dc2f66f18",
+      measurementId: "G-RF6V6XKLVQ"
     };
     firebase.initializeApp(firebaseConfig);
     var storage = firebase.storage();
@@ -257,6 +260,9 @@
 
     var db = firebase.firestore();
     var outputRef = db.collection("output");
+
+    var firebaseDatabase = firebase.database();
+    var userref = firebase.database().ref("users/");
 
     outputRef.orderBy("time", "desc").limit(6).get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
@@ -277,22 +283,41 @@
       });
     });
     
+    
 
     $("#menu_output").click(function () {
       window.location.href = "./board_output.html?" + "uid=" + uid;
     });
-
     $("#menu_input").click(function () {
       window.location.href = "./board_input.html?" + "uid=" + uid;
     });
-
+    $("#main_mypage").click(function () {
+      window.location.href = "./mypage.html?uid=" + uid;
+    });
+    $("#main_home").click(function () {
+      window.location.href = "./home.html?uid=" + uid;
+    });
+    $("#main_logo").click(function(){
+      window.location.href = "./home.html?"+"uid="+uid;
+    })
+    $("#main_chat").click(function(){
+      userref.once('value', function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+          var childkey = childSnapshot.key;
+          if (childkey == uid) {
+            userName = childSnapshot.val().name;
+            window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8") +"&uid="+uid;
+          }
+        });
+      });
+    });
+    
     function output_write(){
       window.location.href = "writepost.html?uid=" + uid +"&func=" + "output";
 
     }
-  </script>
-  
 
+  </script>
 </body>
 
 </html>

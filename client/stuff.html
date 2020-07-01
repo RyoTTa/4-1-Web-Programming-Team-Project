@@ -114,14 +114,14 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home
+                        <a class="nav-link" id="main_home">Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">My Page</a>
+                        <a class="nav-link" id="main_mypage">My Page</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Chatting</a>
+                        <a class="nav-link" id="main_chat">Chatting</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Logout</a>
@@ -170,6 +170,7 @@
                 }
                 var oParams = getUrlParams();
                 var uName = decodeURI(oParams.myName, "UTF-8");
+                var uid = oParams.uid;
 
                 var newFriendsDiv = document.createElement("div");
                 newFriendsDiv.setAttribute("id", "friends");
@@ -233,6 +234,7 @@
             var oParams = getUrlParams();
             var myName = decodeURI(oParams.myName, "UTF-8");
             var other;
+            var chatref = null;
 
             //파이어 베이스 초기화 코드
             var config = {
@@ -295,7 +297,7 @@
                 //채팅창에 추가
                 ocontainer.appendChild(onewmsg);
 
-                var objDiv = document.getElementById("chat-messages"); 
+                var objDiv = document.getElementById("chat-messages");
                 objDiv.scrollTop = objDiv.scrollHeight;
             }
 
@@ -337,14 +339,14 @@
                 //jstalktheme_addmsg(0,otherName, ampm+" "+h+":"+m, otxtmsg.value.replace("\n","<br />\n"));
             }
 
-            function setOthername(otherName){other = otherName;}
+            function setOthername(otherName) { other = otherName; }
 
             function readmsg(otherName) {
                 //var otherName = '이효동';
                 clear();
                 console.log('myname : ' + myName);
                 console.log('opponent : ' + otherName);
-                var chatref = firebase.database().ref("msgs/" + myName + otherName + '/');
+                chatref = firebase.database().ref("msgs/" + myName + otherName + '/');
                 chatref.on('child_added', function (data) {
                     if (data.val().name == myName) {
                         jstalktheme_addmsg(0, myName, data.val().time, data.val().message);
@@ -360,6 +362,7 @@
                 while (cell.hasChildNodes()) {
                     cell.removeChild(cell.firstChild);
                 }
+                if (chatref != null) chatref.off();
             }
 
         </script>
@@ -383,7 +386,29 @@
             <button id="send" onclick="jstalktheme_testfunc();"></button>
         </div>
     </div>
-
+    <script>
+        $("#menu_output").click(function () {
+            window.location.href = "./board_output.html?" + "uid=" + uid;
+        });
+        $("#menu_input").click(function () {
+            window.location.href = "./board_input.html?" + "uid=" + uid;
+        });
+        $("#main_mypage").click(function () {
+            window.location.href = "./mypage.html?uid=" + uid;
+        });
+        $("#main_home").click(function () {
+            window.location.href = "./home.html?uid=" + uid;
+        });
+        $("#main_logo").click(function () {
+            window.location.href = "./home.html?" + "uid=" + uid;
+        })
+        $("#main_logo").click(function () {
+            window.location.href = "./home.html?" + "uid=" + uid;
+        })
+        $("#main_chat").click(function(){
+            window.location.href = "./stuff.html?myName=" + uName +"&uid="+uid;
+        })
+    </script>
 
 
 </body>

@@ -26,19 +26,19 @@
             width: 100%;
             height: 30%;
             margin-top: 10px;
-            border-bottom:2px solid rgb(240, 240, 240);
+            border-bottom: 2px solid rgb(240, 240, 240);
         }
 
         .comment_name {
             font-size: 20px;
             margin-left: 15px;
-            margin-bottom:10px;
+            margin-bottom: 10px;
         }
 
         .comment_date {
             font-size: 15px;
             margin-left: 80%;
-            
+
         }
 
         .comment_content {
@@ -78,7 +78,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <img src="./images/LOGO.png" style="width: 40px; height: 40px;">
-            <a class="navbar-brand" href="home.html">&nbsp다 ~ 주라</a>
+            <a class="navbar-brand" id="main_logo">&nbsp다 ~ 주라</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -86,15 +86,15 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="home.html">Home
+                        <a class="nav-link" id="main_home">Home
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="mypage.html">My Page</a>
+                        <a class="nav-link" id="main_mypage">My Page</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="chat.html">Chatting</a>
+                        <a class="nav-link" id="main_chat">Chatting</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">Logout</a>
@@ -143,19 +143,23 @@
                                     <div id="post_location" style="width:80%; border-color: black;">위치정보들어갈 장소</div>
                                 </div>
 
-                                <div style="width:80%; margin : 0 auto; background-color: rgb(240, 240, 240); align-items: center;">
-                                    <image id="post_image" style = "width:100%;">
+                                <div
+                                    style="width:80%; margin : 0 auto; background-color: rgb(240, 240, 240); align-items: center;">
+                                    <image id="post_image" style="width:100%;">
                                     </image>
                                 </div>
 
                                 <div class="mb-3" style="margin-top:30px;">
 
-                                    <div id="post_contents" class="jumbotron"style="background-color: white; border:2px solid rgb(245, 245, 245); border-radius:1%;">게시글 내용</div>
+                                    <div id="post_contents" class="jumbotron"
+                                        style="background-color: white; border:2px solid rgb(245, 245, 245); border-radius:1%;">
+                                        게시글 내용</div>
 
                                 </div>
 
                                 <div style="float:right;">
-                                    <button type="button" class="btn btn-sm btn-primary" id="btnList" style="width:70px; height: 40px; font-size:15px;">목록</button>
+                                    <button type="button" class="btn btn-sm btn-primary" id="btnList"
+                                        style="width:70px; height: 40px; font-size:15px;">목록</button>
                                 </div>
 
 
@@ -163,14 +167,16 @@
 
 
 
-                            <div id="comments_container" class="container-fluid jumbotron" 
+                            <div id="comments_container" class="container-fluid jumbotron"
                                 style="margin-top:100px; padding-top:30px; background-color:rgb(245, 245, 245);">
                                 <div style="margin-bottom:20px; padding:10px; border: 2px solid rgb(240, 240, 240); 
                                     border-radius:5px; background-color:rgb(250, 250, 250);align-items: center;">
 
-                                    <div style="display:flex; flex-direction: row; margin-top:10px; align-items: center;">
+                                    <div
+                                        style="display:flex; flex-direction: row; margin-top:10px; align-items: center;">
                                         <textarea class="form-control" rows="3" name="content" id="content"
-                                            placeholder="댓글을 입력해 주세요" style="width:90%; height:15%;margin-left:5px;"></textarea>
+                                            placeholder="댓글을 입력해 주세요"
+                                            style="width:90%; height:15%;margin-left:5px;"></textarea>
                                         <button type="button" class="btn btn-sm btn-primary"
                                             style="height:80px; width: 80px; margin-left:10px;">입력
                                         </button>
@@ -244,8 +250,11 @@
             apiKey: "AIzaSyCweXAFVhwjG8cglNBGgGkelKW4trxFUxM",
             authDomain: "webproject-cc0c8.firebaseapp.com",
             databaseURL: "https://webproject-cc0c8.firebaseio.com",
+            projectId: "webproject-cc0c8",
             storageBucket: "webproject-cc0c8.appspot.com",
-            projectId: "webproject-cc0c8"
+            messagingSenderId: "1019716028105",
+            appId: "1:1019716028105:web:6cb6a7ee21811dc2f66f18",
+            measurementId: "G-RF6V6XKLVQ"
         };
         firebase.initializeApp(firebaseConfig);
 
@@ -255,12 +264,16 @@
         var db = firebase.firestore();
         var outputRef = db.collection(func).doc(postid);
 
+        
+        var firebaseDatabase = firebase.database();
+        var userref = firebase.database().ref("users/");
+
         outputRef.get().then(function (doc) {
             docdata = doc.data();
             console.log(doc.data());
             var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
-          
-            $("#post_time").text((datee.getMonth()+1)+"월 "+datee.getDate()+"일 "+datee.getHours()+"시");
+
+            $("#post_time").text((datee.getMonth() + 1) + "월 " + datee.getDate() + "일 " + datee.getHours() + "시");
             $("#post_title").text(doc.data().title);
             $("#post_username").text(doc.data().username);
             $("#post_location").text(doc.data().location._lat + " " + doc.data().location._long);
@@ -294,12 +307,17 @@
 
         });
 
-
-
-
-
-
-
+        $("#main_chat").click(function () {
+            userref.once('value', function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childkey = childSnapshot.key;
+                    if (childkey == uid) {
+                        userName = childSnapshot.val().name;
+                        window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8") +"&uid="+uid; 
+                    }
+                });
+            });
+        });
 
     </script>
     <script>
@@ -310,6 +328,16 @@
         $("#menu_input").click(function () {
             window.location.href = "./board_input.html?" + "uid=" + uid;
         });
+        $("#main_mypage").click(function () {
+            window.location.href = "./mypage.html?uid=" + uid;
+        });
+        $("#main_home").click(function () {
+            window.location.href = "./home.html?uid=" + uid;
+        });
+        $("#main_logo").click(function () {
+            window.location.href = "./home.html?" + "uid=" + uid;
+        })
+
     </script>
 </body>
 
