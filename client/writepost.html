@@ -20,7 +20,7 @@
     <!-- Custom styles for this template -->
     <link href="css/shop-homepage.css" rel="stylesheet">
 
-
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <script>
 
         $(document).on('click', '#btnSave', function (e) {
@@ -34,6 +34,14 @@
         });
 
     </script>
+
+    <style>
+    label{
+      margin-bottom:10px;
+      font-family: 'Jua', sans-serif;
+      font-size:23px;
+    }
+    </style>
 </head>
 
 <body>
@@ -77,8 +85,8 @@
 
                 <h1 class="my-4">Menu</h1>
                 <div class="list-group">
-                    <a href="#" class="list-group-item">나눔 해요</a>
-                    <a href="#" class="list-group-item">나눔 받아요</a>
+                    <a href="board.html" class="list-group-item">나눔 해요</a>
+                    <a href="giveboard.html" class="list-group-item">나눔 받아요</a>
                 </div>
 
             </div>
@@ -90,7 +98,7 @@
 
                         <div class="container" role="main">
 
-                            <h2>board Form</h2>
+                            <h2>게시글 등록</h2>
 
                             <form name="form" id="form" role="form" method="post"
                                 action="${pageContext.request.contextPath}/board/saveBoard">
@@ -109,7 +117,9 @@
                                 <div class="mb-3">
                                     <label for="location">위치</label>
 
-                                    <div id="location_info" style="width:80%; border-color: black;">위치정보들어갈 장소</div>
+                                    <input type="text" class="form-location" name="location" id="location"
+                                    placeholder="위치 정보받아서 입력되는 부분">
+
                                     <div>
                                         <button>위치정보 얻어오기</button>
                                     </div>
@@ -135,15 +145,15 @@
                                     </div>
                                 </div>
 
+
+                                <div>
+                                    <input type="submit" class="btn btn-sm btn-primary" id="btnSave" value="저장"></input>
+                                    <button type="button" class="btn btn-sm btn-primary" id="btnList">목록</button>
+                                </div>
+
                             </form>
 
-                            <div>
 
-                                <button type="button" class="btn btn-sm btn-primary" id="btnSave">저장</button>
-
-                                <button type="button" class="btn btn-sm btn-primary" id="btnList">목록</button>
-
-                            </div>
 
                         </div>
 

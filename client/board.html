@@ -18,6 +18,7 @@
 
   <!-- Custom styles for this template -->
   <link href="css/shop-homepage.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
   <style>
     #container {
@@ -34,6 +35,13 @@
 
     #write {
       text-align: right;
+
+    }
+
+    .share-title{
+      margin-bottom:10px;
+      font-family: 'Jua', sans-serif;
+      font-size:30px;
     }
 
     /* Bootstrap 수정 */
@@ -128,7 +136,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <img src="./images/LOGO.png" style="width: 40px; height: 40px;">
-      <a class="navbar-brand" href="#">&nbsp다 ~ 주라</a>
+      <a class="navbar-brand" href="home.html">&nbsp다 ~ 주라</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -136,18 +144,18 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home
+            <a class="nav-link" href="home.html">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">My Page</a>
+            <a class="nav-link" href="mypage.html">My Page</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Chatting</a>
+            <a class="nav-link" href="chat.html">Chatting</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
+            <a class="nav-link" href="index.html">Logout</a>
           </li>
         </ul>
       </div>
@@ -160,8 +168,8 @@
       <div class="col-lg-3">
         <h1 class="my-4">Menu</h1>
         <div class="list-group">
-          <a href="#" class="list-group-item">나눔 해요</a>
-          <a href="#" class="list-group-item">나눔 받아요</a>
+          <a href="board.html" class="list-group-item">나눔 해요</a>
+          <a href="giveboard.html" class="list-group-item">나눔 받아요</a>
         </div>
       </div>
       <!-- /.col-lg-3 -->
@@ -169,6 +177,7 @@
       <div class="col-lg-9" >
 
         <div style="margin-top:100px;">
+          <div class="share-title"> < 나눔 해요 > </div>
           <table class="table table-striped table-bordered table-hover">
             <thead>
               <tr>
@@ -195,16 +204,16 @@
                     </c:if>
                   </td>
                   <td>${article.id}</td>
-                  <td>${article.writeDate}</td>
-                  <td>${article.hit}</td>
-                  <td>${article.hit}</td>
+                  <td>${article.score}</td>
+                  <td>${article.date}</td>
+                  <td>${article.view}</td>
                 <tr>
               </c:forEach>
             </tbody>
           </table>
 
           <div style="float:right; margin-bottom:10px;">
-            <button type="button" class="btn btn-dark">작성하기</button>
+            <button type="button" onclick="location.href='writepost.html'" class="btn btn-dark">작성하기</button>
           </div>
 
         </div>
