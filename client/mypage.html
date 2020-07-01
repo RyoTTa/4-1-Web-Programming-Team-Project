@@ -200,7 +200,13 @@
           userEmail = childSnapshot.val().email;
           starcount = childSnapshot.val().starcount;
           starsum = childSnapshot.val().starsum;
-          star = starsum / starcount;
+          if (starcount == 0) {
+            star = 0;
+          }
+          else {
+            star = starsum / starcount;
+          }
+          
           console.log(star);
           console.log(Math.round(star));
           $("#name").text(userName);

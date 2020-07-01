@@ -9,16 +9,16 @@
     <meta name="author" content="">
 
     <style>
-        #chatreq_writer{
-            float:right;
+        #chatreq_writer {
+            float: right;
         }
 
-        #post_username{
-            font-size:22px;
+        #post_username {
+            font-size: 22px;
         }
 
-        #post_writer{
-            display:flex;
+        #post_writer {
+            display: flex;
             flex-direction: row;
         }
 
@@ -139,44 +139,39 @@
                         <div class="container" role="main">
 
                             <h1 id="post_title">게시글 제목</h1>
+                            <div class="mb-3" id="postwriter">
+                                <div id="post_username" style="width:80%; border-color: black;">작성자</div>
+                            </div>
 
-                            <form name="form" id="form" role="form" method="post"
-                                action="${pageContext.request.contextPath}/board/saveBoard">
+                            <div class="mb-3">
+                                <div id="post_time" style="width:80%; border-color: black;">작성일</div>
+                            </div>
+                            <div class="mb-3">
 
-                                <div class="mb-3" id="postwriter">
-                                    <div id="post_username" style="width:80%; border-color: black;">작성자</div>
-                                </div>
+                                <div id="post_location" style="width:80%; border-color: black;">위치정보들어갈 장소</div>
+                            </div>
 
-                                <div class="mb-3">
-                                    <div id="post_time" style="width:80%; border-color: black;">작성일</div>
-                                </div>
-                                <div class="mb-3">
+                            <div
+                                style="width:80%; margin : 0 auto; background-color: rgb(240, 240, 240); align-items: center;">
+                                <image id="post_image" style="width:100%;">
+                                </image>
+                            </div>
 
-                                    <div id="post_location" style="width:80%; border-color: black;">위치정보들어갈 장소</div>
-                                </div>
+                            <div class="mb-3" style="margin-top:30px;">
 
-                                <div
-                                    style="width:80%; margin : 0 auto; background-color: rgb(240, 240, 240); align-items: center;">
-                                    <image id="post_image" style="width:100%;">
-                                    </image>
-                                </div>
+                                <div id="post_contents" class="jumbotron"
+                                    style="background-color: white; border:2px solid rgb(245, 245, 245); border-radius:1%;">
+                                    게시글 내용</div>
 
-                                <div class="mb-3" style="margin-top:30px;">
+                            </div>
 
-                                    <div id="post_contents" class="jumbotron"
-                                        style="background-color: white; border:2px solid rgb(245, 245, 245); border-radius:1%;">
-                                        게시글 내용</div>
-
-                                </div>
-
-                                <div style="float:right;">
-                                    <button type="button" class="btn btn-sm btn-primary" id="btnValid" disabled="true" style="width:70px; height: 40px; font-size:15px;">비활성</button>
-                                    <button type="button" class="btn btn-sm btn-primary" id="btnList" onClick = "history.go(-1)" style="width:70px; height: 40px; font-size:15px;">목록</button>
-                                </div>
-
-
-                            </form>
-
+                            <div style="float:right;">
+                                <button type="button" class="btn btn-sm btn-primary" id="btnValid" disabled="true"
+                                    style="width:70px; height: 40px; font-size:15px;">비활성</button>
+                                <button type="button" class="btn btn-sm btn-primary" id="btnList"
+                                    onClick="history.go(-1)"
+                                    style="width:70px; height: 40px; font-size:15px;">목록</button>
+                            </div>
 
 
                             <div id="comments_container" class="container-fluid jumbotron"
@@ -196,7 +191,7 @@
                                     </div>
 
                                 </div>
-                        </div>
+                            </div>
 
                     </article>
 
@@ -255,44 +250,44 @@
         var firebaseDatabase = firebase.database();
         var userref = firebase.database().ref("users/");
 
-         //-----------------작성자에게 대화신청--------------
-         var writer = document.getElementById("post_username").innerHTML;
-        console.log(writer);
-
-        var wref = rdb.ref('users/' + uid);
-        wref.once('value').then(function (snapshot) {
-            var data = snapshot.val();
-            if (data != null && data.name != writer) {
-                //작성자와 현재 사용자가 다름 -> 대화신청 버튼 생성
-                var chatreq_btn = document.createElement("button");
-                chatreq_btn.setAttribute("id", "chatreq_writer");
-                chatreq_btn.setAttribute("class", "btn btn-sm btn-primary chatreqbtn");
-                chatreq_btn.innerHTML = "대화 신청";
-                chatreq_btn.setAttribute("onclick", "redir_chat_writer()");
-
-                var post_w = document.getElementById("postwriter");
-                post_w.appendChild(chatreq_btn);
-                //.appendChild(chatreq_btn);
-            }
-        })
-
-        //------------------------------------------------
-
         outputRef.get().then(function (doc) {
             docdata = doc.data();
             console.log(doc.data());
-            if(uid == docdata.uid){
-                $("#btnValid").attr("disabled",false);
-                console.log(uid,"  "+docdata.uid);
+            if (uid == docdata.uid) {
+                $("#btnValid").attr("disabled", false);
+                console.log(uid, "  " + docdata.uid);
             }
-            
+
             var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
 
             $("#post_time").text((datee.getMonth() + 1) + "월 " + datee.getDate() + "일 " + datee.getHours() + "시");
             $("#post_title").text(doc.data().title);
             $("#post_username").text(doc.data().username);
-            reverseGeo( docdata.location._long,docdata.location._lat);
+            reverseGeo(docdata.location._long, docdata.location._lat);
             $("#post_contents").text(doc.data().contents);
+
+            //-----------------작성자에게 대화신청--------------
+            var writer = document.getElementById("post_username").innerHTML;
+            var wref = rdb.ref('users/' + uid);
+            wref.once('value').then(function (snapshot) {
+                var data = snapshot.val();
+                console.log(data.name + '/' + writer);
+                if (data.name != writer) {
+                    //작성자와 현재 사용자가 다름 -> 대화신청 버튼 생성
+                    console.log(writer);
+                    var chatreq_btn = document.createElement("button");
+                    chatreq_btn.setAttribute("id", "chatreq_writer");
+                    chatreq_btn.setAttribute("class", "btn btn-sm btn-primary chatreqbtn");
+                    chatreq_btn.innerHTML = "대화 신청";
+                    chatreq_btn.setAttribute("onclick", "redir_chat_writer(" + String(1) + ")");
+
+                    var post_w = document.getElementById("postwriter");
+                    post_w.appendChild(chatreq_btn);
+                    //.appendChild(chatreq_btn);
+                }
+            })
+
+            //------------------------------------------------
 
             var starsRef = storageRef.child(docdata.image);
             console.log(docdata.image);
@@ -321,6 +316,8 @@
             });
 
         });
+
+
 
         //댓글 로딩
         var comref = rdb.ref('Comment').orderByChild('PostID').equalTo(postid);
@@ -381,26 +378,26 @@
                         chatreq_btn.setAttribute("onclick", "redir_chat(" + comid + ")");
                         comment_info.appendChild(chatreq_btn);
                     }
-                    
-                //----------------------------------------------------
 
-                var comment_date = document.createElement("div");
-                comment_date.setAttribute("class", "comment_date");
-                comment_date.innerHTML = date;
+                    //----------------------------------------------------
 
-                var comment_content = document.createElement("div");
-                comment_content.setAttribute("class", "comment_content");
-                comment_content.innerHTML = content;
+                    var comment_date = document.createElement("div");
+                    comment_date.setAttribute("class", "comment_date");
+                    comment_date.innerHTML = date;
 
-                comment_item.appendChild(comment_info);
-                comment_item.appendChild(comment_content);
+                    var comment_content = document.createElement("div");
+                    comment_content.setAttribute("class", "comment_content");
+                    comment_content.innerHTML = content;
+
+                    comment_item.appendChild(comment_info);
+                    comment_item.appendChild(comment_content);
 
 
-                comment_info.appendChild(comment_date);
+                    comment_info.appendChild(comment_date);
 
-                var container = document.getElementById("comments_container");
-                container.appendChild(comment_item);
-                comid += 1;
+                    var container = document.getElementById("comments_container");
+                    container.appendChild(comment_item);
+                    comid += 1;
                 });
 
             });
@@ -422,16 +419,18 @@
             });
         }
 
-        function redir_chat_writer() {
+        function redir_chat_writer(param) {
+            console.log(param);
             var opname = document.getElementById("post_username").innerHTML;
-            var nref = rdb.ref('users/' + uid);
+            var vvef = rdb.ref('users/' + uid);
             console.log(opname);
-            nref.once('value').then(function (snapshot) {
+            vvef.once('value').then(function (snapshot) {
+                console.log('ref in');
                 var udata = snapshot.val();
                 var uname = udata.name;
                 console.log(udata);
                 window.location.href = "./stuff.html?" + "uid=" + uid + "&myName=" + udata.name
-                  + "&redir=comment" + "&opName=" + opname;
+                    + "&redir=comment" + "&opName=" + opname;
             });
         }
 
@@ -449,7 +448,7 @@
 
                 var date = new Date();
                 var year = date.getFullYear();
-                var month = date.getMonth()+1;
+                var month = date.getMonth() + 1;
                 var day = date.getDate();
 
                 var Timestamp = String(year) + '/' + String(month) + '/' + String(day);
@@ -474,22 +473,22 @@
                     var childkey = childSnapshot.key;
                     if (childkey == uid) {
                         userName = childSnapshot.val().name;
-                        window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8") +"&uid="+uid; 
+                        window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8") + "&uid=" + uid;
                     }
                 });
             });
         });
 
-        $("#btnValid").click(function(){
+        $("#btnValid").click(function () {
             outputRef.update({
-                valid : "false"
-            }).then(function() {
+                valid: "false"
+            }).then(function () {
                 alert("비활성화 되었습니다.");
                 history.go(-1);
             })
-            .catch(function(){
-                alert("에러");
-            })
+                .catch(function () {
+                    alert("에러");
+                })
         });
 
     </script>
@@ -512,84 +511,84 @@
         })
 
     </script>
-<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxe76fb65d1a9f4fc5bcf317423e2280b5"></script>
-<script>
-  function reverseGeo(lon, lat) {
-       $
-          .ajax({
-             method: "GET",
-             url: "https://apis.openapi.sk.com/tmap/geo/reversegeocoding?version=1&format=json&callback=result",
-             async: false,
-             data: {
-                "appKey": "l7xxe76fb65d1a9f4fc5bcf317423e2280b5",
-                "coordType": "WGS84GEO",
-                "addressType": "A10",
-                "lon": lon,
-                "lat": lat
-             },
-             success: function (response) {
-                // 3. json에서 주소 파싱
-                var arrResult = response.addressInfo;
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxe76fb65d1a9f4fc5bcf317423e2280b5"></script>
+    <script>
+        function reverseGeo(lon, lat) {
+            $
+                .ajax({
+                    method: "GET",
+                    url: "https://apis.openapi.sk.com/tmap/geo/reversegeocoding?version=1&format=json&callback=result",
+                    async: false,
+                    data: {
+                        "appKey": "l7xxe76fb65d1a9f4fc5bcf317423e2280b5",
+                        "coordType": "WGS84GEO",
+                        "addressType": "A10",
+                        "lon": lon,
+                        "lat": lat
+                    },
+                    success: function (response) {
+                        // 3. json에서 주소 파싱
+                        var arrResult = response.addressInfo;
 
-                //법정동 마지막 문자 
-                var lastLegal = arrResult.legalDong
-                   .charAt(arrResult.legalDong.length - 1);
+                        //법정동 마지막 문자 
+                        var lastLegal = arrResult.legalDong
+                            .charAt(arrResult.legalDong.length - 1);
 
-                // 새주소
-                newRoadAddr = arrResult.city_do + ' '
-                   + arrResult.gu_gun + ' ';
+                        // 새주소
+                        newRoadAddr = arrResult.city_do + ' '
+                            + arrResult.gu_gun + ' ';
 
-                if (arrResult.eup_myun == ''
-                   && (lastLegal == "읍" || lastLegal == "면")) {//읍면
-                   newRoadAddr += arrResult.legalDong;
-                } else {
-                   newRoadAddr += arrResult.eup_myun;
-                }
-                newRoadAddr += ' ' + arrResult.roadName + ' '
-                   + arrResult.buildingIndex;
+                        if (arrResult.eup_myun == ''
+                            && (lastLegal == "읍" || lastLegal == "면")) {//읍면
+                            newRoadAddr += arrResult.legalDong;
+                        } else {
+                            newRoadAddr += arrResult.eup_myun;
+                        }
+                        newRoadAddr += ' ' + arrResult.roadName + ' '
+                            + arrResult.buildingIndex;
 
-                // 새주소 법정동& 건물명 체크
-                if (arrResult.legalDong != ''
-                   && (lastLegal != "읍" && lastLegal != "면")) {//법정동과 읍면이 같은 경우
+                        // 새주소 법정동& 건물명 체크
+                        if (arrResult.legalDong != ''
+                            && (lastLegal != "읍" && lastLegal != "면")) {//법정동과 읍면이 같은 경우
 
-                   if (arrResult.buildingName != '') {//빌딩명 존재하는 경우
-                      newRoadAddr += (' (' + arrResult.legalDong
-                         + ', ' + arrResult.buildingName + ') ');
-                   } else {
-                      newRoadAddr += (' (' + arrResult.legalDong + ')');
-                   }
-                } else if (arrResult.buildingName != '') {//빌딩명만 존재하는 경우
-                   newRoadAddr += (' (' + arrResult.buildingName + ') ');
-                }
+                            if (arrResult.buildingName != '') {//빌딩명 존재하는 경우
+                                newRoadAddr += (' (' + arrResult.legalDong
+                                    + ', ' + arrResult.buildingName + ') ');
+                            } else {
+                                newRoadAddr += (' (' + arrResult.legalDong + ')');
+                            }
+                        } else if (arrResult.buildingName != '') {//빌딩명만 존재하는 경우
+                            newRoadAddr += (' (' + arrResult.buildingName + ') ');
+                        }
 
-                // 구주소
-                jibunAddr = arrResult.city_do + ' '
-                   + arrResult.gu_gun + ' '
-                   + arrResult.legalDong + ' ' + arrResult.ri
-                   + ' ' + arrResult.bunji;
-                //구주소 빌딩명 존재
-                if (arrResult.buildingName != '') {//빌딩명만 존재하는 경우
-                   jibunAddr += (' ' + arrResult.buildingName);
-                }
-                result = newRoadAddr ;
-                //result = "새주소 : " + newRoadAddr + "</br>";
-                //result += "지번주소 : " + jibunAddr + "</br>";
-                //result += "위경도좌표 : " + lat + ", " + lon;
+                        // 구주소
+                        jibunAddr = arrResult.city_do + ' '
+                            + arrResult.gu_gun + ' '
+                            + arrResult.legalDong + ' ' + arrResult.ri
+                            + ' ' + arrResult.bunji;
+                        //구주소 빌딩명 존재
+                        if (arrResult.buildingName != '') {//빌딩명만 존재하는 경우
+                            jibunAddr += (' ' + arrResult.buildingName);
+                        }
+                        result = newRoadAddr;
+                        //result = "새주소 : " + newRoadAddr + "</br>";
+                        //result += "지번주소 : " + jibunAddr + "</br>";
+                        //result += "위경도좌표 : " + lat + ", " + lon;
 
-                //var resultDiv = document.getElementById("result");
-               // resultDiv.innerHTML = result;
-               $("#post_location").text(result);
+                        //var resultDiv = document.getElementById("result");
+                        // resultDiv.innerHTML = result;
+                        $("#post_location").text(result);
 
-             },
-             error: function (request, status, error) {
-                console.log("code:" + request.status + "\n"
-                   + "message:" + request.responseText + "\n"
-                   + "error:" + error);
-             }
-          });
+                    },
+                    error: function (request, status, error) {
+                        console.log("code:" + request.status + "\n"
+                            + "message:" + request.responseText + "\n"
+                            + "error:" + error);
+                    }
+                });
 
-    }
-</script>
+        }
+    </script>
 </body>
 
 </html>
