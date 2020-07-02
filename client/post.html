@@ -69,6 +69,16 @@
             height: 40px;
             margin-left: 100px;
         }
+        .starR{
+            background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
+            background-size: auto 100%;
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            text-indent: -9999px;
+            cursor: pointer;
+        }
+        .starR.on{background-position:0 0;}
     </style>
 
     <title>다~주라</title>
@@ -162,17 +172,25 @@
                                 <div id="post_contents" class="jumbotron"
                                     style="background-color: white; border:2px solid rgb(245, 245, 245); border-radius:1%;">
                                     게시글 내용</div>
-
                             </div>
-
-                            <div style="float:right;">
-                                <button type="button" class="btn btn-sm btn-primary" id="btnValid" disabled="true"
-                                    style="width:70px; height: 40px; font-size:15px;">비활성</button>
-                                <button type="button" class="btn btn-sm btn-primary" id="btnList"
-                                    onClick="history.go(-1)"
-                                    style="width:70px; height: 40px; font-size:15px;">목록</button>
+                            <div>
+                                <div class="starRev" style="float:left;">
+                                    <span id=star1 class="starR on">별1</span>
+                                    <span id=star2 class="starR">별2</span>
+                                    <span id=star3 class="starR">별3</span>
+                                    <span id=star4 class="starR">별4</span>
+                                    <span id=star5 class="starR">별5</span>
+                                    <button type="button" class="btn btn-sm btn-primary" id="btnStar"
+                                        style="width:100px; height: 40px; font-size:15px; margin-left : 20px">별점주기</button>
+                                </div>
+                                <div style="float:right;">
+                                    <button type="button" class="btn btn-sm btn-primary" id="btnValid" disabled="true"
+                                        style="width:70px; height: 40px; font-size:15px;">비활성</button>
+                                    <button type="button" class="btn btn-sm btn-primary" id="btnList"
+                                        onClick="history.go(-1)"
+                                        style="width:70px; height: 40px; font-size:15px;">목록</button>
+                                </div>
                             </div>
-
 
                             <div id="comments_container" class="container-fluid jumbotron"
                                 style="margin-top:100px; padding-top:30px; background-color:rgb(245, 245, 245);">
@@ -218,6 +236,32 @@
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script>
+        var starcount = 0;
+        $('.starRev span').click(function(){
+                $(this).parent().children('span').removeClass('on');
+                $(this).addClass('on').prevAll('span').addClass('on');
+                return false;
+        });
+        $('#star1').click(function(){
+            starcount = 1;
+            console.log(starcount);
+        });
+        $('#star2').click(function(){
+            starcount = 2;
+            console.log(starcount);
+        });
+        $('#star3').click(function(){
+            starcount = 3;
+            console.log(starcount);
+        });
+        $('#star4').click(function(){
+            starcount = 4;
+            console.log(starcount);
+        });
+        $('#star5').click(function(){
+            starcount = 5;
+            console.log(starcount);
+        });
         function getUrlParams() {
             var params = {};
             window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (str, key, value) { params[key] = value; });
@@ -253,9 +297,15 @@
         outputRef.get().then(function (doc) {
             docdata = doc.data();
             console.log(doc.data());
+           
             if (uid == docdata.uid) {
                 $("#btnValid").attr("disabled", false);
+                $("#btnStar").attr("disabled", true);
                 console.log(uid, "  " + docdata.uid);
+            }
+            else
+            {
+                $("#btnStar").attr("disabled", false);
             }
 
             var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
@@ -489,6 +539,34 @@
                 .catch(function () {
                     alert("에러");
                 })
+        });
+
+        $("#btnStar").click(function () {
+            var owner = document.getElementById("post_username").innerHTML;
+            var userref_star = rdb.ref('users/');
+            var postData = {};
+            var userID;
+            userref_star.once('value',function(snapshot){
+                snapshot.forEach(function(childsnapshot){
+                    if(childsnapshot.val().name == owner)
+                    {
+                        userID=childsnapshot.key;
+                        var count = childsnapshot.val().starcount;
+                        var sum = childsnapshot.val().starsum;
+                        count = count + 1;
+                        sum = sum + starcount;  
+                        postData = {
+                            email : childsnapshot.val().email,
+                            name : childsnapshot.val().name,
+                            starcount : count,
+                            starsum : sum,
+                        };
+                        rdb.ref('users/'+userID).update(postData);
+                        alert('별점 주기 완료');
+                        document.location.reload(true);
+                    }
+                });
+            });
         });
 
     </script>
