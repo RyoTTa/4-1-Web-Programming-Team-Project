@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <style>
+        #chatreq_writer {
+            float: right;
+        }
+
+        #post_username {
+            font-size: 22px;
+        }
+
+        #post_writer {
+            display: flex;
+            flex-direction: row;
+        }
+
+        #comments_container {
+            background-color: rgb(220, 220, 220);
+        }
+
+        .comment_item {
+            background-color: white;
+            margin-top: 10px;
+            border: 2px solid rgb(240, 240, 240);
+            border-radius: 5px;
+        }
+
+        .comment_info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            grid-auto-rows: minmax(50px, auto);
+
+            width: 100%;
+            height: 15%;
+            margin-top: 20px;
+            border-bottom: 2px solid rgb(240, 240, 240);
+
+        }
+
+        .comment_name {
+            width: 100px !important;
+            font-size: 20px;
+            margin-left: 15px;
+            margin-bottom: 10px;
+
+        }
+
+        .comment_date {
+            font-size: 15px;
+            margin-left: 70%;
+        }
+
+        .comment_content {
+            font-size: 12px;
+            padding: 20px;
+        }
+
+        .chatreqbtn {
+            width: 100px !important;
+            height: 40px;
+            margin-left: 100px;
+        }
+        .starR{
+            background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
+            background-size: auto 100%;
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            text-indent: -9999px;
+            cursor: pointer;
+        }
+        .starR.on{background-position:0 0;}
+    </style>
+
+    <title>다~주라</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/shop-homepage.css" rel="stylesheet">
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <img src="./images/LOGO.png" style="width: 40px; height: 40px;">
+            <a class="navbar-brand" id="main_logo">&nbsp다 ~ 주라</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" id="main_home">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="main_mypage">My Page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="main_chat">Chatting</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-3">
+
+                <h1 class="my-4">Menu</h1>
+                <div class="list-group">
+                    <a class="list-group-item" id="menu_output">나눔 해요</a>
+                    <a class="list-group-item" id="menu_input">나눔 받아요</a>
+                </div>
+
+            </div>
+            <!-- /.col-lg-3 -->
+
+            <div class="col-lg-9">
+                <div>
+                    <article style="margin-top: 100px; padding-bottom:10px;">
+
+                        <div class="container" role="main">
+
+                            <h1 id="post_title">게시글 제목</h1>
+                            <div class="mb-3" id="postwriter">
+                                <div id="post_username" style="width:80%; border-color: black;">작성자</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div id="post_time" style="width:80%; border-color: black;">작성일</div>
+                            </div>
+                            <div class="mb-3">
+
+                                <div id="post_location" style="width:80%; border-color: black;">위치정보들어갈 장소</div>
+                            </div>
+
+                            <div
+                                style="width:80%; margin : 0 auto; background-color: rgb(240, 240, 240); align-items: center;">
+                                <image id="post_image" style="width:100%;">
+                                </image>
+                            </div>
+
+                            <div class="mb-3" style="margin-top:30px;">
+
+                                <div id="post_contents" class="jumbotron"
+                                    style="background-color: white; border:2px solid rgb(245, 245, 245); border-radius:1%;">
+                                    게시글 내용</div>
+                            </div>
+                            <div>
+                                <div class="starRev" style="float:left;">
+                                    <span id=star1 class="starR on">별1</span>
+                                    <span id=star2 class="starR">별2</span>
+                                    <span id=star3 class="starR">별3</span>
+                                    <span id=star4 class="starR">별4</span>
+                                    <span id=star5 class="starR">별5</span>
+                                    <button type="button" class="btn btn-sm btn-primary" id="btnStar"
+                                        style="width:100px; height: 40px; font-size:15px; margin-left : 20px">별점주기</button>
+                                </div>
+                                <div style="float:right;">
+                                    <button type="button" class="btn btn-sm btn-primary" id="btnValid" disabled="true"
+                                        style="width:70px; height: 40px; font-size:15px;">비활성</button>
+                                    <button type="button" class="btn btn-sm btn-primary" id="btnList"
+                                        onClick="history.go(-1)"
+                                        style="width:70px; height: 40px; font-size:15px;">목록</button>
+                                </div>
+                            </div>
+
+                            <div id="comments_container" class="container-fluid jumbotron"
+                                style="margin-top:100px; padding-top:30px; background-color:rgb(245, 245, 245);">
+                                <div style="margin-bottom:20px; padding:10px; border: 2px solid rgb(240, 240, 240); 
+                                    border-radius:5px; background-color:rgb(250, 250, 250);align-items: center;">
+
+                                    <div
+                                        style="display:flex; flex-direction: row; margin-top:10px; align-items: center;">
+                                        <textarea class="form-control" rows="3" name="content" id="content"
+                                            placeholder="댓글을 입력해 주세요"
+                                            style="width:90%; height:15%;margin-left:5px;"></textarea>
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                            style="height:80px; width: 80px; margin-left:10px;"
+                                            onclick="writeNewComment()">입력
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                    </article>
+
+                </div>
+
+
+            </div>
+            <!-- /.col-lg-9 -->
+
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+    <script>
+        var starcount = 0;
+        $('.starRev span').click(function(){
+                $(this).parent().children('span').removeClass('on');
+                $(this).addClass('on').prevAll('span').addClass('on');
+                return false;
+        });
+        $('#star1').click(function(){
+            starcount = 1;
+            console.log(starcount);
+        });
+        $('#star2').click(function(){
+            starcount = 2;
+            console.log(starcount);
+        });
+        $('#star3').click(function(){
+            starcount = 3;
+            console.log(starcount);
+        });
+        $('#star4').click(function(){
+            starcount = 4;
+            console.log(starcount);
+        });
+        $('#star5').click(function(){
+            starcount = 5;
+            console.log(starcount);
+        });
+        function getUrlParams() {
+            var params = {};
+            window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (str, key, value) { params[key] = value; });
+            return params;
+        }
+        var oParams = getUrlParams();
+        var uid = oParams.uid;
+        var func = oParams.func;
+        var postid = oParams.postid;
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyCweXAFVhwjG8cglNBGgGkelKW4trxFUxM",
+            authDomain: "webproject-cc0c8.firebaseapp.com",
+            databaseURL: "https://webproject-cc0c8.firebaseio.com",
+            projectId: "webproject-cc0c8",
+            storageBucket: "webproject-cc0c8.appspot.com",
+            messagingSenderId: "1019716028105",
+            appId: "1:1019716028105:web:6cb6a7ee21811dc2f66f18",
+            measurementId: "G-RF6V6XKLVQ"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        var storage = firebase.storage();
+        var storageRef = storage.ref();
+
+        var db = firebase.firestore();
+        var rdb = firebase.database();
+        var outputRef = db.collection(func).doc(postid);
+
+        var firebaseDatabase = firebase.database();
+        var userref = firebase.database().ref("users/");
+
+        outputRef.get().then(function (doc) {
+            docdata = doc.data();
+            console.log(doc.data());
+           
+            if (uid == docdata.uid) {
+                $("#btnValid").attr("disabled", false);
+                $("#btnStar").attr("disabled", true);
+                console.log(uid, "  " + docdata.uid);
+            }
+            else
+            {
+                $("#btnStar").attr("disabled", false);
+            }
+
+            var datee = new Date((docdata.time.seconds * 1000) + (docdata.time.nanoseconds / 1000000));
+
+            $("#post_time").text((datee.getMonth() + 1) + "월 " + datee.getDate() + "일 " + datee.getHours() + "시");
+            $("#post_title").text(doc.data().title);
+            $("#post_username").text(doc.data().username);
+            reverseGeo(docdata.location._long, docdata.location._lat);
+            $("#post_contents").text(doc.data().contents);
+
+            //-----------------작성자에게 대화신청--------------
+            var writer = document.getElementById("post_username").innerHTML;
+            var wref = rdb.ref('users/' + uid);
+            wref.once('value').then(function (snapshot) {
+                var data = snapshot.val();
+                console.log(data.name + '/' + writer);
+                if (data.name != writer) {
+                    //작성자와 현재 사용자가 다름 -> 대화신청 버튼 생성
+                    console.log(writer);
+                    var chatreq_btn = document.createElement("button");
+                    chatreq_btn.setAttribute("id", "chatreq_writer");
+                    chatreq_btn.setAttribute("class", "btn btn-sm btn-primary chatreqbtn");
+                    chatreq_btn.innerHTML = "대화 신청";
+                    chatreq_btn.setAttribute("onclick", "redir_chat_writer(" + String(1) + ")");
+
+                    var post_w = document.getElementById("postwriter");
+                    post_w.appendChild(chatreq_btn);
+                    //.appendChild(chatreq_btn);
+                }
+            })
+
+            //------------------------------------------------
+
+            var starsRef = storageRef.child(docdata.image);
+            console.log(docdata.image);
+            starsRef.getDownloadURL().then(function (url) {
+                $("#post_image").attr("src", url);
+            }).catch(function (error) {
+
+                switch (error.code) {
+                    case 'storage/object-not-found':
+                        // File doesn't exist
+                        break;
+
+                    case 'storage/unauthorized':
+                        // User doesn't have permission to access the object
+                        break;
+
+                    case 'storage/canceled':
+                        // User canceled the upload
+                        break;
+
+                    case 'storage/unknown':
+                        // Unknown error occurred, inspect the server response
+                        break;
+                }
+
+            });
+
+        });
+
+
+
+        //댓글 로딩
+        var comref = rdb.ref('Comment').orderByChild('PostID').equalTo(postid);
+        var comid = 0;
+        //Comment의 PostID를 참조해 게시글과 댓글을 매칭
+        comref.once('value', function (datasnapshot) {
+            datasnapshot.forEach(childsnapshot => {
+                //각 댓글을 출력
+                var childData = childsnapshot.val();
+                console.log(childData);
+                var content = childData.Content;    //댓글내용
+                var writer = childData.Writer;      //댓글 작성자
+                var date = childData.Date;          //작성날짜
+                var namelist = [];
+
+                /*
+                <div class="comment_item">
+                                    <div class="comment_info">
+                                        <div class="comment_name">이정우</div>
+                                        <div class="comment_date">20/07/01</div>
+                                    </div>
+                                    <div class="comment_content">잘 보고 갑니다. 저도 하나 사고싶네요~</div>
+                                </div>
+                */
+
+                var comment_item = document.createElement("div");
+                comment_item.setAttribute("class", "comment_item");
+
+                var comment_info = document.createElement("div");
+                comment_info.setAttribute("class", "comment_info");
+
+                var comment_name = document.createElement("p");
+                comment_name.setAttribute("id", "comment_name" + String(comid));
+                comment_name.setAttribute("class", "comment_name");
+                comment_name.innerHTML = writer;
+
+                comment_info.appendChild(comment_name);
+
+                //----------------------------------------------------
+                //댓글쓴이 본인 체크
+
+                var nref = rdb.ref('users/' + uid);
+                var ret;
+                nref.once('value').then(function (snapshot) {
+                    var udata = snapshot.val();
+                    var uname = udata.name;
+
+                    console.log('in check : ' + comid);
+
+                    //var comname = document.getElementById("comment_name" + String(comid)).innerText;
+                    console.log(comment_name.innerHTML);
+
+                    if (comment_name.innerHTML != uname) {
+                        var chatreq_btn = document.createElement("button");
+                        chatreq_btn.setAttribute("id", "chatreq" + String(comid));
+                        chatreq_btn.setAttribute("class", "btn btn-primary chatreqbtn");
+                        chatreq_btn.innerHTML = "대화신청";
+                        chatreq_btn.setAttribute("onclick", "redir_chat(" + comid + ")");
+                        comment_info.appendChild(chatreq_btn);
+                    }
+
+                    //----------------------------------------------------
+
+                    var comment_date = document.createElement("div");
+                    comment_date.setAttribute("class", "comment_date");
+                    comment_date.innerHTML = date;
+
+                    var comment_content = document.createElement("div");
+                    comment_content.setAttribute("class", "comment_content");
+                    comment_content.innerHTML = content;
+
+                    comment_item.appendChild(comment_info);
+                    comment_item.appendChild(comment_content);
+
+
+                    comment_info.appendChild(comment_date);
+
+                    var container = document.getElementById("comments_container");
+                    container.appendChild(comment_item);
+                    comid += 1;
+                });
+
+            });
+        });
+
+
+        function redir_chat(cid) {
+            var nref = rdb.ref('users/' + uid);
+            console.log(uid);
+            console.log("comment_name" + String(cid));
+            var opname = document.getElementById("comment_name" + String(cid)).innerText;
+            console.log(opname);
+            nref.once('value').then(function (snapshot) {
+                var udata = snapshot.val();
+                var uname = udata.name;
+                console.log(udata);
+                window.location.href = "./stuff.html?" + "uid=" + uid + "&myName=" + udata.name
+                    + "&redir=comment" + "&opName=" + opname;
+            });
+        }
+
+        function redir_chat_writer(param) {
+            console.log(param);
+            var opname = document.getElementById("post_username").innerHTML;
+            var vvef = rdb.ref('users/' + uid);
+            console.log(opname);
+            vvef.once('value').then(function (snapshot) {
+                console.log('ref in');
+                var udata = snapshot.val();
+                var uname = udata.name;
+                console.log(udata);
+                window.location.href = "./stuff.html?" + "uid=" + uid + "&myName=" + udata.name
+                    + "&redir=comment" + "&opName=" + opname;
+            });
+        }
+
+        function writeNewComment() {
+            var content = document.getElementById("content").value;   //댓글 내용
+            console.log('write : ' + content);
+
+            //빈 댓글 체크
+            if (content == "") return;
+            var userref = rdb.ref('users/' + uid);
+            userref.once('value').then(function (snapshot) {
+                //사용자 이름을 uid를 통해 받아옴(동기)
+                var userdata = snapshot.val();
+                var username = userdata.name;
+
+                var date = new Date();
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+
+                var Timestamp = String(year) + '/' + String(month) + '/' + String(day);
+
+                var writeref = rdb.ref('Comment');
+                var obj = {
+                    PostID: postid,
+                    Content: content,
+                    Writer: username,
+                    Date: Timestamp,
+                }
+
+                writeref.push(obj);
+                location.reload();
+            });
+
+        }
+
+        $("#main_chat").click(function () {
+            userref.once('value', function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childkey = childSnapshot.key;
+                    if (childkey == uid) {
+                        userName = childSnapshot.val().name;
+                        window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8") + "&uid=" + uid;
+                    }
+                });
+            });
+        });
+
+        $("#btnValid").click(function () {
+            outputRef.update({
+                valid: "false"
+            }).then(function () {
+                alert("비활성화 되었습니다.");
+                history.go(-1);
+            })
+                .catch(function () {
+                    alert("에러");
+                })
+        });
+
+        $("#btnStar").click(function () {
+            var owner = document.getElementById("post_username").innerHTML;
+            var userref_star = rdb.ref('users/');
+            var postData = {};
+            var userID;
+            userref_star.once('value',function(snapshot){
+                snapshot.forEach(function(childsnapshot){
+                    if(childsnapshot.val().name == owner)
+                    {
+                        userID=childsnapshot.key;
+                        var count = childsnapshot.val().starcount;
+                        var sum = childsnapshot.val().starsum;
+                        count = count + 1;
+                        sum = sum + starcount;  
+                        postData = {
+                            email : childsnapshot.val().email,
+                            name : childsnapshot.val().name,
+                            starcount : count,
+                            starsum : sum,
+                        };
+                        rdb.ref('users/'+userID).update(postData);
+                        alert('별점 주기 완료');
+                        document.location.reload(true);
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        $("#menu_output").click(function () {
+            window.location.href = "./board_output.html?" + "uid=" + uid;
+        });
+
+        $("#menu_input").click(function () {
+            window.location.href = "./board_input.html?" + "uid=" + uid;
+        });
+        $("#main_mypage").click(function () {
+            window.location.href = "./mypage.html?uid=" + uid;
+        });
+        $("#main_home").click(function () {
+            window.location.href = "./home.html?uid=" + uid;
+        });
+        $("#main_logo").click(function () {
+            window.location.href = "./home.html?" + "uid=" + uid;
+        })
+
+    </script>
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxe76fb65d1a9f4fc5bcf317423e2280b5"></script>
+    <script>
+        function reverseGeo(lon, lat) {
+            $
+                .ajax({
+                    method: "GET",
+                    url: "https://apis.openapi.sk.com/tmap/geo/reversegeocoding?version=1&format=json&callback=result",
+                    async: false,
+                    data: {
+                        "appKey": "l7xxe76fb65d1a9f4fc5bcf317423e2280b5",
+                        "coordType": "WGS84GEO",
+                        "addressType": "A10",
+                        "lon": lon,
+                        "lat": lat
+                    },
+                    success: function (response) {
+                        // 3. json에서 주소 파싱
+                        var arrResult = response.addressInfo;
+
+                        //법정동 마지막 문자 
+                        var lastLegal = arrResult.legalDong
+                            .charAt(arrResult.legalDong.length - 1);
+
+                        // 새주소
+                        newRoadAddr = arrResult.city_do + ' '
+                            + arrResult.gu_gun + ' ';
+
+                        if (arrResult.eup_myun == ''
+                            && (lastLegal == "읍" || lastLegal == "면")) {//읍면
+                            newRoadAddr += arrResult.legalDong;
+                        } else {
+                            newRoadAddr += arrResult.eup_myun;
+                        }
+                        newRoadAddr += ' ' + arrResult.roadName + ' '
+                            + arrResult.buildingIndex;
+
+                        // 새주소 법정동& 건물명 체크
+                        if (arrResult.legalDong != ''
+                            && (lastLegal != "읍" && lastLegal != "면")) {//법정동과 읍면이 같은 경우
+
+                            if (arrResult.buildingName != '') {//빌딩명 존재하는 경우
+                                newRoadAddr += (' (' + arrResult.legalDong
+                                    + ', ' + arrResult.buildingName + ') ');
+                            } else {
+                                newRoadAddr += (' (' + arrResult.legalDong + ')');
+                            }
+                        } else if (arrResult.buildingName != '') {//빌딩명만 존재하는 경우
+                            newRoadAddr += (' (' + arrResult.buildingName + ') ');
+                        }
+
+                        // 구주소
+                        jibunAddr = arrResult.city_do + ' '
+                            + arrResult.gu_gun + ' '
+                            + arrResult.legalDong + ' ' + arrResult.ri
+                            + ' ' + arrResult.bunji;
+                        //구주소 빌딩명 존재
+                        if (arrResult.buildingName != '') {//빌딩명만 존재하는 경우
+                            jibunAddr += (' ' + arrResult.buildingName);
+                        }
+                        result = newRoadAddr;
+                        //result = "새주소 : " + newRoadAddr + "</br>";
+                        //result += "지번주소 : " + jibunAddr + "</br>";
+                        //result += "위경도좌표 : " + lat + ", " + lon;
+
+                        //var resultDiv = document.getElementById("result");
+                        // resultDiv.innerHTML = result;
+                        $("#post_location").text(result);
+
+                    },
+                    error: function (request, status, error) {
+                        console.log("code:" + request.status + "\n"
+                            + "message:" + request.responseText + "\n"
+                            + "error:" + error);
+                    }
+                });
+
+        }
+    </script>
+</body>
+
+</html>
