@@ -75,7 +75,7 @@
                     var userName;
                     if (childkey == uid) {
                         userName = childSnapshot.val().name;
-                        window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8")
+                        window.location.href = "./stuff.html?myName=" + encodeURI(userName, "UTF-8") + "&uid=" + uid;
                     }
                 });
             });
